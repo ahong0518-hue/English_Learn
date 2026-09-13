@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
 <meta name="robots" content="noindex, nofollow">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PET Round 62 · 鄉村 (2/2) · 四模式單字卡</title>
 <style>
@@ -752,14 +752,20 @@ function playAudio(word) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
   if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-  currentAudio = new Audio(ttsUrl(word));
-  currentAudio.play().catch(() => {
-    if ('speechSynthesis' in window) {
-      const u = new SpeechSynthesisUtterance(word);
-      u.lang = 'en-US'; u.rate = 0.85;
-      window.speechSynthesis.speak(u);
-    }
-  });
+  if ('speechSynthesis' in window) {
+    const u = new SpeechSynthesisUtterance(word);
+    u.lang = 'en-US'; u.rate = 0.85;
+    const voices = window.speechSynthesis.getVoices();
+    const preferred = voices.find(v =>
+      /en(-US|-GB)?$/i.test(v.lang) &&
+      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
+    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
+    if (preferred) u.voice = preferred;
+    window.speechSynthesis.speak(u);
+  } else {
+    currentAudio = new Audio(ttsUrl(word));
+    currentAudio.play().catch(() => {});
+  }
 }
 
 function renderCards() {
