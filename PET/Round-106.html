@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PET Round 106 · 其他核心詞 (26/28) · 四模式單字卡</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+    background: #f5f7fa;
+    color: #2c3e50;
+    line-height: 1.6;
+    padding-bottom: 100px;
+  }
+  header {
+    background: linear-gradient(135deg, #2c3e50, #4a6491);
+    color: white;
+    padding: 20px 16px 14px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .home-link {
+    position: absolute; top: 16px; left: 16px;
+    color: white; text-decoration: none;
+    background: rgba(255,255,255,0.15);
+    padding: 5px 12px; border-radius: 16px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .home-link:hover { background: rgba(255,255,255,0.25); }
+  header h1 { font-size: 1.15rem; }
+  .mode-bar {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .mode-btn {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .mode-btn:hover { background: rgba(255,255,255,0.25); }
+  .mode-btn.active { background: white; color: #2c3e50; font-weight: 600; }
+
+  main { max-width: 720px; margin: 20px auto; padding: 0 14px; }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 5px solid #4a6491;
+    transition: opacity 0.2s;
+    scroll-margin-top: 130px;
+    position: relative;
+  }
+  .flag-btn {
+    position: absolute; top: 10px; right: 12px;
+    background: none; border: none; font-size: 1.35rem;
+    cursor: pointer; color: #d5dce4; padding: 4px 6px;
+    line-height: 1; z-index: 2;
+    transition: transform 0.15s;
+  }
+  .flag-btn:hover { transform: scale(1.15); }
+  .flag-btn.flagged { color: #f39c12; }
+  .card.flagged { background: linear-gradient(90deg, #fffcf3 0%, white 8%); }
+  #cards.filter-flagged .card:not(.flagged) { display: none; }
+  .tool-btn.on { background: #fff3d6; border-color: #f39c12; color: #a55d00; }
+  .card-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: #4a6491; color: white;
+    border-radius: 50%; font-size: 0.85rem;
+    font-weight: 600; margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .card.family .card-number { background: #27ae60; }
+  .card.confuse .card-number { background: #e67e22; }
+  .card-header {
+    display: flex; align-items: center;
+    cursor: pointer; user-select: none;
+  }
+  .card-header .word-head { margin-bottom: 0; flex: 1; }
+  .expand-icon {
+    color: #7a8ba0; font-size: 0.9rem;
+    transition: transform 0.2s; margin-left: 8px;
+  }
+  .card.expanded .expand-icon { transform: rotate(180deg); }
+  .card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  .card.expanded .card-body {
+    max-height: 2000px;
+    transition: max-height 0.4s ease-in;
+  }
+  .card-body-inner { padding-top: 12px; }
+  .float-nav {
+    position: fixed;
+    bottom: 62px; left: 50%; transform: translateX(-50%);
+    background: white; padding: 8px 12px;
+    border-radius: 30px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 8px;
+    z-index: 20;
+  }
+  .float-nav.hidden { display: none; }
+  .nav-btn {
+    background: #4a6491; color: white; border: none;
+    width: 44px; height: 44px; border-radius: 50%;
+    font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit;
+  }
+  .nav-btn:hover { background: #3d5a80; }
+  .nav-btn:disabled { background: #cbd3dd; cursor: not-allowed; }
+  .nav-btn.done { background: #27ae60; }
+  .nav-position {
+    font-size: 0.9rem; color: #3d5a80; font-weight: 600;
+    min-width: 46px; text-align: center;
+  }
+  .toolbar {
+    display: flex; gap: 8px; margin-bottom: 14px;
+    align-items: center; flex-wrap: wrap;
+  }
+  .tool-btn {
+    background: white; border: 1px solid #dce3ec;
+    padding: 6px 14px; border-radius: 18px;
+    font-size: 0.82rem; cursor: pointer; color: #3d5a80;
+    font-family: inherit;
+  }
+  .tool-btn:hover { background: #eef3f9; }
+  .tool-info { font-size: 0.82rem; color: #7a8ba0; margin-left: auto; }
+  .card.family { border-left-color: #27ae60; }
+  .card.confuse { border-left-color: #e67e22; }
+  .card.answered-right { border-left-color: #27ae60; background: #f7fcf9; }
+  .card.answered-wrong { border-left-color: #c0392b; background: #fdf6f4; }
+
+  .word-head {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 4px;
+  }
+  .word { font-size: 1.6rem; font-weight: 700; color: #2c3e50; }
+  .kk { color: #7a8ba0; font-size: 1.05rem; }
+  .speak {
+    cursor: pointer; background: #eef3f9; border: none; border-radius: 50%;
+    width: 36px; height: 36px; font-size: 1rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .speak:hover { background: #d6e2f0; }
+  .speak.big { width: 60px; height: 60px; font-size: 1.6rem; background: #4a6491; color: white; }
+  .speak.big:hover { background: #3d5a80; }
+
+  .pos { color: #3d5a80; font-weight: 600; margin: 6px 0 10px; font-size: 1rem; }
+  .meaning-big { font-size: 1.4rem; color: #2c3e50; font-weight: 600; margin: 10px 0; }
+
+  .row {
+    margin: 8px 0; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem;
+  }
+  .row .label {
+    display: inline-block; background: #4a6491; color: white; font-size: 0.72rem;
+    padding: 2px 8px; border-radius: 10px; margin-right: 8px; vertical-align: middle;
+  }
+  .row.orig { background: #f7f9fc; } .row.orig .label { background: #7a8ba0; }
+  .row.orig + .row.orig { background: #f3f1fa; }
+  .row.orig + .row.orig .label { background: #8e7cc3; }
+  .row.simp { background: #eaf6ee; } .row.simp .label { background: #27ae60; }
+  .row.match { background: #fff8e1; } .row.match .label { background: #f39c12; }
+  .coll-sep { color: #f39c12; font-weight: 700; margin: 0 2px; }
+  .row.family-row { background: #e8f5ea; } .row.family-row .label { background: #27ae60; }
+  .row.confuse-row { background: #fdf1e6; } .row.confuse-row .label { background: #e67e22; }
+  .cn { color: #555; font-size: 0.9rem; }
+
+  .tags { margin-top: 10px; }
+  .tag {
+    display: inline-block; background: #eef3f9; color: #3d5a80;
+    font-size: 0.75rem; padding: 3px 10px; border-radius: 12px; margin-right: 4px;
+  }
+
+  .quiz-input {
+    width: 100%; padding: 10px 14px; font-size: 1.1rem;
+    border: 2px solid #dce3ec; border-radius: 8px; margin: 10px 0;
+    font-family: inherit;
+  }
+  .quiz-input:focus { outline: none; border-color: #4a6491; }
+  .quiz-input.correct { border-color: #27ae60; background: #f7fcf9; }
+  .quiz-input.wrong { border-color: #c0392b; background: #fdf6f4; }
+
+  .quiz-actions {
+    display: flex; gap: 8px; margin: 10px 0;
+  }
+  .btn {
+    padding: 8px 16px; border: none; border-radius: 8px;
+    font-size: 0.9rem; cursor: pointer; font-family: inherit;
+  }
+  .btn-check { background: #4a6491; color: white; }
+  .btn-check:hover { background: #3d5a80; }
+  .btn-reveal { background: #eef3f9; color: #3d5a80; }
+  .btn-reveal:hover { background: #d6e2f0; }
+
+  .rate-row {
+    display: flex; gap: 6px; margin-top: 12px;
+  }
+  .rate-btn {
+    flex: 1; padding: 8px; border: 1px solid #dce3ec; background: white;
+    border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+  }
+  .rate-btn:hover { background: #f5f7fa; }
+  .rate-btn.forgot { color: #c0392b; }
+  .rate-btn.hard { color: #f39c12; }
+  .rate-btn.got { color: #27ae60; }
+
+  .feedback {
+    margin-top: 10px; padding: 10px 12px; border-radius: 8px;
+    font-size: 0.9rem; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.right { background: #eaf6ee; color: #1e7e4d; }
+  .feedback.wrong { background: #fdf1e6; color: #a83b1c; }
+  .feedback .diff { font-family: monospace; font-size: 1.1rem; margin-top: 4px; }
+  .feedback .diff .miss { color: #c0392b; text-decoration: underline; font-weight: 700; }
+
+  .card-hidden { display: none; }
+  #cards.single-view .card:not(.active) { display: none; }
+  .clickable { cursor: pointer; }
+  .clickable:hover { background: #fafcfe; }
+
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; padding: 12px 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    display: flex; align-items: center; gap: 14px; font-size: 0.85rem;
+    z-index: 10;
+  }
+  .progress-track {
+    flex: 1; height: 8px; background: #eef3f9; border-radius: 4px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, #4a6491, #27ae60);
+    width: 0%; transition: width 0.3s;
+  }
+  .stats { display: flex; gap: 10px; color: #555; }
+  .stats .right-c { color: #27ae60; font-weight: 600; }
+  .stats .wrong-c { color: #c0392b; font-weight: 600; }
+  .reset-btn {
+    background: #eef3f9; border: none; padding: 6px 12px; border-radius: 6px;
+    cursor: pointer; font-size: 0.8rem; color: #3d5a80;
+  }
+
+  .back {
+    display: inline-block; margin: 8px 6px 0 0;
+    padding: 8px 16px; background: #3d5a80; color: white;
+    text-decoration: none; border-radius: 8px; font-size: 0.9rem;
+  }
+
+  .mode-hint {
+    text-align: center; color: #7a8ba0; font-size: 0.85rem;
+    margin-bottom: 12px; padding: 8px; background: #eef3f9; border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="home-link" href="index.html">← 首頁</a>
+  <h1>R106 · 其他核心詞 (26/28) · 39 字</h1>
+  <div class="mode-bar">
+    <button class="mode-btn active" data-mode="study">📖 學習</button>
+    <button class="mode-btn" data-mode="en2zh">🇬🇧→🇹🇼 英測中</button>
+    <button class="mode-btn" data-mode="zh2en">🇹🇼→🇬🇧 中測英</button>
+    <button class="mode-btn" data-mode="listen">🔊 聽寫</button>
+  </div>
+</header>
+
+<main>
+  <div class="mode-hint" id="modeHint"></div>
+  <div class="toolbar" id="toolbar"></div>
+  <div id="cards" class="single-view"></div>
+  <a class="back" href="index.html">← 回首頁</a>
+  <a class="back" href="method.html">📖 學習方法</a>
+</main>
+
+<div class="float-nav hidden" id="floatNav">
+  <button class="nav-btn" id="prevBtn" onclick="goPrev()">←</button>
+  <span class="nav-position" id="navPos">1 / 8</span>
+  <button class="nav-btn" id="nextBtn" onclick="goNext()">→</button>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="stats">
+    <span>已答 <b id="statAnswered">0</b>/<b id="statTotal">0</b></span>
+    <span class="right-c">✅ <span id="statRight">0</span></span>
+    <span class="wrong-c">❌ <span id="statWrong">0</span></span>
+  </div>
+  <button class="reset-btn" onclick="resetProgress()">重置</button>
+</div>
+
+<script>
+const words = [
+  {
+    "word": "tongue",
+    "kk": "[tʌŋ]",
+    "pos": "n.",
+    "meaning": "舌頭",
+    "exOrig": "She burned her tongue on the hot soup.",
+    "exOrigZh": "她被熱湯燙到了舌頭。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "trade",
+    "kk": "[treɪd]",
+    "pos": "n.",
+    "meaning": "貿易；交易v 做買賣；交換 過 traded 現 trading",
+    "exOrig": "The two countries trade goods with each other.",
+    "exOrigZh": "這兩個國家互相進行貿易往來。",
+    "exOrig2": "He offered to trade his sandwich for her apple.",
+    "exOrig2Zh": "他提議用他的三明治換她的蘋果。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tonne",
+    "kk": "[tʌn]",
+    "pos": "n.",
+    "meaning": "噸",
+    "exOrig": "The truck can carry five tonnes of goods.",
+    "exOrigZh": "這輛卡車可以承載五噸貨物。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "traditional",
+    "kk": "[trəˋdɪʃənl]",
+    "pos": "adj.",
+    "meaning": "傳統的；慣",
+    "exOrig": "的",
+    "exOrigZh": null,
+    "exOrig2": "The children wore traditional costumes for the school festival.",
+    "exOrig2Zh": "孩子們在學校節慶活動中穿著傳統服裝。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "toothbrush",
+    "kk": "[ˋtuθbrʌʃ]",
+    "pos": "n.",
+    "meaning": "牙刷",
+    "exOrig": "He uses a new toothbrush every month.",
+    "exOrigZh": "他每個月換一支新牙刷。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "thick",
+    "kk": "[θɪk]",
+    "pos": "adj.",
+    "meaning": "厚的；茂密的",
+    "exOrig": "The book has very thick pages.",
+    "exOrigZh": "這本書的頁面非常厚。",
+    "exOrig2": "The forest was so thick that sunlight could barely reach the ground.",
+    "exOrig2Zh": "森林茂密得陽光幾乎無法照到地面。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "toothpaste",
+    "kk": "[ˋtuθpeɪst]",
+    "pos": "n.",
+    "meaning": "牙膏",
+    "exOrig": "Don't forget to put toothpaste on your brush.",
+    "exOrigZh": "別忘了在牙刷上擠牙膏。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "transfer",
+    "kk": "[trænsˋfɝ(r)]",
+    "pos": "v.",
+    "meaning": "轉讓；轉移",
+    "exOrig": "She transferred to a new school this year.",
+    "exOrigZh": "她今年轉到了一所新學校。",
+    "exOrig2": "The bank helped him transfer money to his friend's account.",
+    "exOrig2Zh": "銀行幫助他把錢轉到朋友的帳戶。",
+    "collocation": "transfer from…to… 從……轉移至……",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "top",
+    "kk": "[tɒp]",
+    "pos": "n.",
+    "meaning": "頂部；頂端；上衣 adj 最好的",
+    "exOrig": "Kal started making skirts and tops for herself.",
+    "exOrigZh": "卡爾開始為自己做裙 子和上衣。",
+    "exOrig2": "She reached the top of the hill by noon.",
+    "exOrig2Zh": "她在中午前就爬到了山頂。",
+    "collocation": "on top 在上面；在頂部",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "underground",
+    "kk": "[͵ʌndəˋɡraʊnd]",
+    "pos": "adj.",
+    "meaning": "地下的 n 地鐵",
+    "exOrig": "The underground train is fast and clean.",
+    "exOrigZh": "地鐵又快又乾淨。",
+    "exOrig2": "The mole digs underground tunnels to live in.",
+    "exOrig2Zh": "鼴鼠挖掘地下隧道居住。",
+    "collocation": "underground trains 地鐵",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "thief",
+    "kk": "[θif]",
+    "pos": "n.",
+    "meaning": "賊，小偷  復 thieves",
+    "exOrig": "The thief stole a bag from the shop.",
+    "exOrigZh": "那個小偷從店裡偷了一個包。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "topic",
+    "kk": "[ˋtɒpɪk]",
+    "pos": "n.",
+    "meaning": "話題；題目；主題",
+    "exOrig": "The topic of today's lesson is space.",
+    "exOrigZh": "今天課堂的主題是太空。",
+    "exOrig2": "Climate change is a popular topic among students nowadays.",
+    "exOrig2Zh": "氣候變遷是當今學生之間熱門討論的話題。",
+    "collocation": "hot topic 熱門話題",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "trend",
+    "kk": "[trend]",
+    "pos": "n.",
+    "meaning": "趨勢，趨向",
+    "exOrig": "This is a general trend.",
+    "exOrigZh": "這是一種普遍趨勢。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "underline",
+    "kk": "[͵ʌndəˋlaɪn]",
+    "pos": "v.",
+    "meaning": "在（詞語等）下面畫線",
+    "exOrig": "Please underline the key words in the text.",
+    "exOrigZh": "請在文章中的關鍵字下方畫線。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "think",
+    "kk": "[θɪŋk]",
+    "pos": "v.",
+    "meaning": "想，認為；思考",
+    "exOrig": "I think she's left.",
+    "exOrigZh": "我想她已經走了。 過 thought",
+    "exOrig2": "Take your time to think before you answer the question.",
+    "exOrig2Zh": "在回答問題之前，請慢慢思考。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tick",
+    "kk": "[tɪk]",
+    "pos": "v.",
+    "meaning": "標",
+    "exOrig": "Tick the box if your answer is correct.",
+    "exOrigZh": "如果你的答案正確，請在方框內打勾。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "total",
+    "kk": "[ˋtəʊtl]",
+    "pos": "n.",
+    "meaning": "總數；總計 adj 總的，全部的；完全的",
+    "exOrig": "The total cost of the trip was fifty dollars.",
+    "exOrigZh": "這次旅行的總費用是五十美元。",
+    "exOrig2": "The damage was a total disaster for the team.",
+    "exOrig2Zh": "這次損失對整個隊伍來說是完全的災難。",
+    "collocation": "in total 總計",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "trick",
+    "kk": "[trɪk]",
+    "pos": "n.",
+    "meaning": "騙局，花招；惡作劇",
+    "exOrig": "The boys were playing tricks on their teacher.",
+    "exOrigZh": "這些男孩子在捉弄他 們的老師。",
+    "exOrig2": "The magician showed us an amazing card trick at the party.",
+    "exOrig2Zh": "魔術師在派對上向我們展示了一個令人驚嘆的紙牌魔術。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "understand",
+    "kk": "[͵ʌndəˋstænd]",
+    "pos": "v.",
+    "meaning": "明白，理解；意識到",
+    "exOrig": "Catherine finds it hard to understand why Marcus has so much homework.",
+    "exOrigZh": "凱薩琳很難理解為什麼馬庫斯有這麼多的家庭作業。 過 understood",
+    "exOrig2": "I slowly came to understand that mistakes help us learn.",
+    "exOrig2Zh": "我漸漸意識到，犯錯能幫助我們成長。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "though",
+    "kk": "[ðəʊ]",
+    "pos": "conj.",
+    "meaning": "雖然，儘管",
+    "exOrig": "Though Joan's almost 40, she still plans to leave her job.",
+    "exOrigZh": "儘管瓊已經 快40歲了，她仍打算辭職。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "time",
+    "kk": "[taɪm]",
+    "pos": "n.",
+    "meaning": "鐘點；次；一段時間",
+    "exOrig": "What time does the movie start tonight?",
+    "exOrigZh": "今晚電影幾點開始？",
+    "exOrig2": "This is the third time I've watched this film.",
+    "exOrig2Zh": "這是我第三次看這部電影了。",
+    "collocation": "the last time 最後一次 in time 及時",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "touch",
+    "kk": "[tʌtʃ]",
+    "pos": "v.",
+    "meaning": "接觸；觸摸；碰到 n 接觸；觸覺",
+    "exOrig": "Do not touch the wet paint on the wall.",
+    "exOrigZh": "不要碰牆上未乾的油漆。",
+    "exOrig2": "They kept in touch by writing letters.",
+    "exOrig2Zh": "他們透過寫信保持聯絡。",
+    "collocation": "keep in touch 保持聯繫",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "trouble",
+    "kk": "[ˋtrʌbl]",
+    "pos": "n.",
+    "meaning": "麻煩；煩惱v 使煩惱；麻煩",
+    "exOrig": "He got into trouble for being late again.",
+    "exOrigZh": "他因為再度遲到而惹上麻煩。",
+    "exOrig2": "Could I trouble you to open the window for me?",
+    "exOrig2Zh": "可以麻煩你幫我打開窗戶嗎？",
+    "collocation": "get into trouble 招致不幸；陷入困境 in trouble 處於困境中 have trouble with… 與/做……有麻煩",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tune",
+    "kk": "[tjun]",
+    "pos": "n.",
+    "meaning": "曲調；合調v 調音",
+    "exOrig": "She hummed a cheerful tune while cooking.",
+    "exOrigZh": "她一邊做飯一邊哼著歡快的曲調。",
+    "exOrig2": "The guitarist spent twenty minutes tuning his guitar before the show.",
+    "exOrig2Zh": "吉他手在表演前花了二十分鐘調音。",
+    "collocation": "in tune 音調正確 out of tune 走調；不協調",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "undress",
+    "kk": "[ʌnˋdres]",
+    "pos": "v.",
+    "meaning": "（給……）脫衣服",
+    "exOrig": "This little boy still needs an adult to undress him.",
+    "exOrigZh": "這個小男孩仍需 要大人給他脫衣服。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "thrilled",
+    "kk": "[θrɪld]",
+    "pos": "adj.",
+    "meaning": "非常興奮的",
+    "exOrig": "The kids were thrilled to see the fireworks.",
+    "exOrigZh": "孩子們看到煙火時非常興奮。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tiny",
+    "kk": "[ˋtaɪni]",
+    "pos": "adj.",
+    "meaning": "微小的，極小的 比 tinier 最 tiniest",
+    "exOrig": "A tiny ant crawled across the table.",
+    "exOrigZh": "一隻微小的螞蟻爬過桌面。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tough",
+    "kk": "[tʌf]",
+    "pos": "adj.",
+    "meaning": "堅強的；棘手的；粗野的",
+    "exOrig": "This math problem is really tough to solve.",
+    "exOrigZh": "這道數學題真的很棘手。",
+    "exOrig2": "You need to be tough to survive a long camping trip in the rain.",
+    "exOrig2Zh": "在雨中進行漫長的露營旅行，你需要非常堅強才能撐下去。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "true",
+    "kk": "[tru]",
+    "pos": "adj.",
+    "meaning": "正確的；真正的",
+    "exOrig": "Is it true that you won the contest?",
+    "exOrigZh": "你贏得比賽是真的嗎？",
+    "exOrig2": "She is a true friend who always supports me.",
+    "exOrig2Zh": "她是一位真正的朋友，總是支持我。",
+    "collocation": "a true friend 一個真正的朋友",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "turn",
+    "kk": "[tɝn]",
+    "pos": "v.",
+    "meaning": "變成；轉變；旋轉；轉身；轉動 n 轉向；轉動；輪到的機會",
+    "exOrig": "It's your turn to roll the dice now.",
+    "exOrigZh": "現在輪到你擲骰子了。",
+    "exOrig2": "The weather turned cold overnight.",
+    "exOrig2Zh": "天氣一夜之間變冷了。",
+    "collocation": "turn up 開大，調高（收音機、暖氣等） turn away 走開 turn down 調低（聲音）；拒絕 turn into （使）變成 turn on/off 打開/關閉 turn over 翻轉；移交",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "twice",
+    "kk": "[twaɪs]",
+    "pos": "adv.",
+    "meaning": "兩次；兩倍",
+    "exOrig": "I have read this book twice already.",
+    "exOrigZh": "我已經讀過這本書兩次了。",
+    "exOrig2": "This bag costs twice as much as the other one.",
+    "exOrig2Zh": "這個袋子的價格是另一個的兩倍。",
+    "collocation": "twice a week 每星期兩次",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "unexpected",
+    "kk": "[͵ʌnɪkˋspektɪd]",
+    "pos": "adj.",
+    "meaning": "意外的；突然的",
+    "exOrig": "The magazine is looking for stories which have an unexpected ending.",
+    "exOrigZh": "這本雜誌正在尋找結局出人意料的故事。",
+    "exOrig2": "We had an unexpected visit from our cousins on Sunday.",
+    "exOrig2Zh": "星期天，我們的表親突然來訪。",
+    "collocation": "an unexpected result 一個意想不到的結果",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "throughout",
+    "kk": "[θruˋaʊt]",
+    "pos": "adv.",
+    "meaning": "各處；遍及；自始至終",
+    "exOrig": "It usually snows here throughout the winter.",
+    "exOrigZh": "這裡常常一冬天都在下 雪。",
+    "exOrig2": "His name is known throughout the country.",
+    "exOrig2Zh": "他的名字遍及全國，無人不知。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "title",
+    "kk": "[ˋtaɪtl]",
+    "pos": "n.",
+    "meaning": "標題；頭銜",
+    "exOrig": "The title of her story is very creative.",
+    "exOrigZh": "她故事的標題非常有創意。",
+    "exOrig2": "She earned the title of school chess champion this year.",
+    "exOrig2Zh": "她今年贏得了學校西洋棋冠軍的頭銜。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tourism",
+    "kk": "[ˋtʊərɪzəm]",
+    "pos": "n.",
+    "meaning": "旅遊業",
+    "exOrig": "Tourism brings a lot of money to the city.",
+    "exOrigZh": "旅遊業為這座城市帶來大量收入。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "try",
+    "kk": "[traɪ]",
+    "pos": "v/n.",
+    "meaning": "嘗試；努力；試驗",
+    "exOrig": "There's always a lot of traffic in the town centre, so don't try cycling there.",
+    "exOrigZh": "市中心的交通總是很擁擠，所以不要嘗試在那裡騎車。",
+    "exOrig2": "Give the new dish a try — you might like it!",
+    "exOrig2Zh": "試試這道新菜——你可能會喜歡的！",
+    "collocation": "try one's best 盡某人最大的努力 try on 試穿",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "tutor",
+    "kk": "[ˋtjutə(r)]",
+    "pos": "n.",
+    "meaning": "導師；家庭教師v 任……的私人導師；指導",
+    "exOrig": "She has a tutor to help her with math.",
+    "exOrigZh": "她有一位家庭教師幫助她學數學。",
+    "exOrig2": "He tutored younger students in reading after school.",
+    "exOrig2Zh": "他在放學後指導年紀較小的學生閱讀。",
+    "collocation": "tutor sb. in sth. 輔導/教某人某事",
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "twin",
+    "kk": "[twɪn]",
+    "pos": "adj.",
+    "meaning": "成雙的；孿生的 n 孿生兒之一，雙胞胎之一",
+    "exOrig": "I'm coming to visit your town in summer with my parents and my twin brother.",
+    "exOrigZh": "夏天，我會和父母以及我的孿生兄弟來你們城鎮參觀。",
+    "exOrig2": "They booked a twin room at the hotel.",
+    "exOrig2Zh": "他們在飯店預訂了一間雙人房。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "unfortunately",
+    "kk": "[ʌnˋfɔtʃənətli]",
+    "pos": "adv.",
+    "meaning": "不幸地",
+    "exOrig": "The disease could be cured, but, unfortunately, the closest medicine that could be found was in Anchorage, right on the other side of Alaska.",
+    "exOrigZh": "這種 病可以治癒，但不幸的是，能被找到的最類似的藥物在安克雷奇，正好 在阿拉斯加的另一邊。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R106"
+    ],
+    "type": "normal"
+  }
+];
+
+const HINTS = {
+  study:  '📖 全部展開,第一次學:看+聽+跟讀 3 次',
+  en2zh:  '🇬🇧→🇹🇼 看英文想中文,點卡片翻面驗證',
+  zh2en:  '🇹🇼→🇬🇧 看中文拼英文,拼錯不擦,看差在哪',
+  listen: '🔊 只聽發音打字,最強記憶模式(聽+寫+視覺三合一)'
+};
+
+let currentMode = 'study';
+let answered = {};
+let flags = JSON.parse(localStorage.getItem('pet-r106-flags') || '{}');
+let modeOrder = { study: null, en2zh: null, zh2en: null, listen: null };
+let modeIdx = { study: 0, en2zh: 0, zh2en: 0, listen: 0 };
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function ensureOrder(mode) {
+  if (!modeOrder[mode]) {
+    const seq = words.map((_, i) => i);
+    modeOrder[mode] = (mode === 'study') ? seq : shuffle(seq);
+  }
+  return modeOrder[mode];
+}
+
+function reshuffle(mode) {
+  const seq = words.map((_, i) => i);
+  modeOrder[mode] = shuffle(seq);
+  modeIdx[mode] = 0;
+}
+
+function getOrder() { return ensureOrder(currentMode); }
+
+function saveFlags() { localStorage.setItem('pet-r106-flags', JSON.stringify(flags)); }
+function setFlag(i, on) {
+  if (on) flags[i] = true; else delete flags[i];
+  saveFlags();
+  const card = document.getElementById(`card-${i}`);
+  if (!card) return;
+  card.classList.toggle('flagged', !!flags[i]);
+  const btn = card.querySelector('.flag-btn');
+  if (btn) {
+    btn.classList.toggle('flagged', !!flags[i]);
+    btn.textContent = flags[i] ? '⭐' : '☆';
+  }
+  updateFlagCount();
+}
+function toggleFlag(i) { setFlag(i, !flags[i]); }
+function updateFlagCount() {
+  const el = document.getElementById('flagCount');
+  if (el) el.textContent = Object.keys(flags).length;
+}
+
+function ttsUrl(w) {
+  return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
+}
+
+let currentAudio = null;
+let lastAudioTime = 0;
+function playAudio(word) {
+  const now = Date.now();
+  if (now - lastAudioTime < 250) return;
+  lastAudioTime = now;
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  currentAudio = new Audio(ttsUrl(word));
+  currentAudio.play().catch(() => {
+    if ('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US'; u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    }
+  });
+}
+
+function renderCards() {
+  const container = document.getElementById('cards');
+  container.innerHTML = '';
+  document.getElementById('modeHint').textContent = HINTS[currentMode];
+  document.getElementById('statTotal').textContent = words.length;
+  renderToolbar();
+
+  words.forEach((w, i) => {
+    const card = document.createElement('div');
+    card.className = `card ${w.type}`;
+    card.id = `card-${i}`;
+    if (i === currentIdx) card.classList.add('active', 'expanded');
+    if (flags[i]) card.classList.add('flagged');
+    card.innerHTML = `<button class="flag-btn ${flags[i]?'flagged':''}" onclick="event.stopPropagation();toggleFlag(${i})" title="標記疑難字">${flags[i]?'⭐':'☆'}</button>` + renderCardContent(w, i);
+    container.appendChild(card);
+  });
+  updateProgress();
+  updateFloatNav();
+}
+
+function renderToolbar() {
+  const tb = document.getElementById('toolbar');
+  const cont = document.getElementById('cards');
+  const filterOn = cont.classList.contains('filter-flagged');
+  const isQuiz = currentMode !== 'study';
+  tb.innerHTML = `
+    <button class="tool-btn" onclick="toggleAllView()">📖 全部展開 / 單張</button>
+    <button class="tool-btn ${filterOn?'on':''}" id="filterBtn" onclick="toggleFilter()">🚩 只看疑難 (<span id="flagCount">0</span>)</button>
+    ${isQuiz ? `<button class="tool-btn" onclick="reshuffleNow()">🔀 重新洗牌</button>` : ''}
+    <span class="tool-info">← → 切換</span>
+  `;
+  updateFlagCount();
+}
+
+function reshuffleNow() {
+  reshuffle(currentMode);
+  currentIdx = modeOrder[currentMode][0];
+  renderCards();
+}
+
+function toggleFilter() {
+  const cont = document.getElementById('cards');
+  const willTurnOn = !cont.classList.contains('filter-flagged');
+  const btn = document.getElementById('filterBtn');
+
+  if (willTurnOn) {
+    const flagged = Object.keys(flags).map(Number).sort((a,b)=>a-b);
+    if (flagged.length === 0) {
+      alert('目前沒有疑難字。答錯或按 ⭐ 標記後,可以只看疑難複習。');
+      return;
+    }
+    cont.classList.add('filter-flagged');
+    btn.classList.add('on');
+    if (!flags[currentIdx]) goToCard(flagged[0]);
+    else updateFloatNav();
+  } else {
+    cont.classList.remove('filter-flagged');
+    btn.classList.remove('on');
+    updateFloatNav();
+  }
+}
+
+function toggleAllView() {
+  const cont = document.getElementById('cards');
+  cont.classList.toggle('single-view');
+  if (cont.classList.contains('single-view')) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+    const cur = document.getElementById(`card-${currentIdx}`);
+    if (cur) cur.classList.add('expanded', 'active');
+  } else {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('expanded'));
+  }
+  updateFloatNav();
+}
+
+let currentIdx = 0;
+
+function toggleCard(i) {
+  const card = document.getElementById(`card-${i}`);
+  card.classList.toggle('expanded');
+  if (card.classList.contains('expanded')) {
+    currentIdx = i;
+    updateFloatNav();
+    playAudio(words[i].word);
+  }
+}
+
+function scrollToCard(i) {
+  const card = document.getElementById(`card-${i}`);
+  if (!card) return;
+  const headerH = document.querySelector('header').offsetHeight;
+  const y = card.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+  window.scrollTo({top: y, behavior: 'smooth'});
+}
+
+function goToCard(i) {
+  if (i < 0 || i >= words.length) return;
+  const cur = document.getElementById(`card-${currentIdx}`);
+  const next = document.getElementById(`card-${i}`);
+
+  const bodies = document.querySelectorAll('.card-body');
+  bodies.forEach(b => b.style.transition = 'none');
+
+  if (cur) { cur.classList.remove('expanded', 'active'); }
+  next.classList.add('expanded', 'active');
+
+  void next.offsetHeight;
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  setTimeout(() => bodies.forEach(b => b.style.transition = ''), 60);
+
+  currentIdx = i;
+  modeIdx[currentMode] = getOrder().indexOf(i);
+  updateFloatNav();
+  if (currentMode !== 'zh2en') playAudio(words[i].word);
+
+  const input = next.querySelector('input.quiz-input');
+  if (input) setTimeout(() => input.focus(), 200);
+}
+
+function visibleIndices() {
+  const cont = document.getElementById('cards');
+  const filterOn = cont.classList.contains('filter-flagged');
+  const order = getOrder();
+  return order.filter(i => !filterOn || flags[i]);
+}
+
+function goPrev() {
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  if (pos > 0) goToCard(v[pos - 1]);
+  else if (pos === -1 && v.length) goToCard(v[v.length - 1]);
+}
+
+function goNext() {
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  if (pos >= 0 && pos < v.length - 1) goToCard(v[pos + 1]);
+  else if (pos === -1 && v.length) goToCard(v[0]);
+}
+
+function updateFloatNav() {
+  const nav = document.getElementById('floatNav');
+  const cont = document.getElementById('cards');
+  const singleView = cont.classList.contains('single-view');
+  if (!singleView) { nav.classList.add('hidden'); return; }
+  nav.classList.remove('hidden');
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  const displayPos = pos >= 0 ? pos + 1 : 0;
+  document.getElementById('navPos').textContent = `${displayPos} / ${v.length}`;
+  document.getElementById('prevBtn').disabled = (pos <= 0);
+  const nextBtn = document.getElementById('nextBtn');
+  const atLast = (pos === v.length - 1);
+  nextBtn.disabled = atLast;
+  if (atLast) {
+    nextBtn.classList.add('done');
+    nextBtn.textContent = '✓';
+  } else {
+    nextBtn.classList.remove('done');
+    nextBtn.textContent = '→';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+});
+
+function fmtCollocation(s) {
+  // Split after a Chinese/non-ASCII char before an English word start
+  const parts = s.split(/(?<=[^\x00-\x7f])\s+(?=[a-zA-Z\(（])/);
+  if (parts.length <= 1) return s;
+  return parts.join(' <span class="coll-sep">·</span> ');
+}
+
+function renderCardContent(w, i) {
+  const num = `<div class="card-number">${i+1}</div>`;
+  const audioBtn = `<button class="speak" onclick="event.stopPropagation();playAudio('${w.word}')">🔊</button>`;
+  const bigAudioBtn = `<button class="speak big" onclick="playAudio('${w.word}')">🔊</button>`;
+
+  const fullInfo = `
+    <div class="pos">${w.pos} ${w.meaning}</div>
+    ${w.exOrig ? `<div class="row orig"><span class="label">例句</span>${w.exOrig}<br><span class="cn">${w.exOrigZh}</span></div>` : ''}
+    ${w.exOrig2 ? `<div class="row orig"><span class="label">另義</span>${w.exOrig2}<br><span class="cn">${w.exOrig2Zh}</span></div>` : ''}
+    ${w.antonym ? `<div class="row confuse-row"><span class="label">反義</span>${w.antonym}</div>` : ''}
+    ${w.collocation ? `<div class="row match"><span class="label">搭配</span>${fmtCollocation(w.collocation)}</div>` : ''}
+    ${w.family ? `<div class="row family-row"><span class="label">字族</span>${w.family}</div>` : ''}
+    ${w.contrast ? `<div class="row confuse-row"><span class="label">對比</span>${w.contrast}</div>` : ''}
+    <div class="tags">${w.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+  `;
+
+  if (currentMode === 'study') {
+    return `
+      <div class="card-header" onclick="toggleCard(${i})">
+        ${num}
+        <div class="word-head"><span class="word">${w.word}</span><span class="kk">${w.kk}</span>${audioBtn}</div>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="card-body"><div class="card-body-inner">
+        ${fullInfo}
+      </div></div>
+    `;
+  }
+
+  if (currentMode === 'en2zh') {
+    return `
+      <div class="clickable" onclick="flipCard(${i})">
+        <div style="display:flex;align-items:center">
+          ${num}
+          <div class="word-head" style="flex:1"><span class="word">${w.word}</span><span class="kk">${w.kk}</span>${audioBtn}</div>
+        </div>
+        <div id="back-${i}" class="card-hidden">${fullInfo}</div>
+        <div id="hint-${i}" style="color:#7a8ba0;font-size:0.85rem;margin-top:8px">👆 想好中文意思後,點卡片翻面</div>
+      </div>
+      <div id="rate-${i}" class="rate-row card-hidden">
+        <button class="rate-btn forgot" onclick="rate(${i},'wrong')">😅 忘了</button>
+        <button class="rate-btn hard" onclick="rate(${i},'hard')">🙂 有點難</button>
+        <button class="rate-btn got" onclick="rate(${i},'right')">😎 會了</button>
+      </div>
+    `;
+  }
+
+  if (currentMode === 'zh2en') {
+    return `
+      <div style="display:flex;align-items:center;margin-bottom:6px">${num}<span style="color:#7a8ba0;font-size:0.85rem">第 ${i+1} 題</span></div>
+      <div class="meaning-big">${w.meaning}</div>
+      <div class="pos" style="font-size:0.85rem">${w.pos}${w.exSimpZh ? ' · 提示例句:' + w.exSimpZh : ''}</div>
+      <input type="text" class="quiz-input" id="input-${i}" placeholder="輸入英文單字..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')handleEnter(${i})">
+      <div class="quiz-actions">
+        <button class="btn btn-check" onclick="checkSpelling(${i})">檢查</button>
+        <button class="btn btn-reveal" onclick="revealAnswer(${i})">看答案</button>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+  }
+
+  if (currentMode === 'listen') {
+    return `
+      <div style="display:flex;align-items:center;margin-bottom:6px">${num}<span style="color:#7a8ba0;font-size:0.85rem">第 ${i+1} 題</span></div>
+      <div style="text-align:center;margin:10px 0">${bigAudioBtn}</div>
+      <div style="text-align:center;color:#7a8ba0;font-size:0.85rem;margin-bottom:8px">聽發音,拼寫出來</div>
+      <input type="text" class="quiz-input" id="input-${i}" placeholder="打字..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')handleEnter(${i})">
+      <div class="quiz-actions">
+        <button class="btn btn-check" onclick="checkSpelling(${i})">檢查</button>
+        <button class="btn btn-reveal" onclick="revealAnswer(${i})">看答案</button>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+  }
+}
+
+function flipCard(i) {
+  document.getElementById(`back-${i}`).classList.remove('card-hidden');
+  document.getElementById(`hint-${i}`).style.display = 'none';
+  document.getElementById(`rate-${i}`).classList.remove('card-hidden');
+  playAudio(words[i].word);
+}
+
+function rate(i, result) {
+  answered[i] = result;
+  const card = document.getElementById(`card-${i}`);
+  card.classList.remove('answered-right','answered-wrong');
+  if (result === 'right') { card.classList.add('answered-right'); setFlag(i, false); }
+  else if (result === 'wrong') { card.classList.add('answered-wrong'); setFlag(i, true); }
+  else if (result === 'hard') { setFlag(i, true); }
+  saveProgress();
+  updateProgress();
+}
+
+function handleEnter(i) {
+  const input = document.getElementById(`input-${i}`);
+  if (input.classList.contains('correct')) {
+    goNext();
+  } else {
+    checkSpelling(i);
+  }
+}
+
+function checkSpelling(i) {
+  const input = document.getElementById(`input-${i}`);
+  const fb = document.getElementById(`fb-${i}`);
+  const user = input.value.trim().toLowerCase();
+  const correct = words[i].word.toLowerCase();
+
+  if (!user) return;
+
+  if (user === correct) {
+    input.classList.remove('wrong'); input.classList.add('correct');
+    fb.className = 'feedback show right';
+    fb.innerHTML = `✅ 答對了!<div style="margin-top:6px">${words[i].word} ${words[i].kk} — ${words[i].pos} ${words[i].meaning}</div>`;
+    answered[i] = 'right';
+    setFlag(i, false);
+  } else {
+    input.classList.remove('correct'); input.classList.add('wrong');
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = `❌ 差一點!你寫的:<b>${input.value}</b><br>正解:<span class="diff">${diffMark(user, correct)}</span><div style="margin-top:6px">${words[i].kk} — ${words[i].pos} ${words[i].meaning}</div>`;
+    answered[i] = 'wrong';
+    setFlag(i, true);
+  }
+  playAudio(words[i].word);
+  saveProgress(); updateProgress();
+}
+
+function diffMark(user, correct) {
+  let html = '';
+  for (let k = 0; k < correct.length; k++) {
+    if (user[k] === correct[k]) html += correct[k];
+    else html += `<span class="miss">${correct[k]}</span>`;
+  }
+  return html;
+}
+
+function revealAnswer(i) {
+  const fb = document.getElementById(`fb-${i}`);
+  fb.className = 'feedback show wrong';
+  fb.innerHTML = `答案:<b style="font-size:1.2rem">${words[i].word}</b> ${words[i].kk}<div>${words[i].pos} ${words[i].meaning}</div>`;
+  playAudio(words[i].word);
+  answered[i] = 'wrong';
+  setFlag(i, true);
+  saveProgress(); updateProgress();
+}
+
+function updateProgress() {
+  const total = words.length;
+  const done = Object.keys(answered).length;
+  const right = Object.values(answered).filter(r => r === 'right').length;
+  const wrong = Object.values(answered).filter(r => r === 'wrong' || r === 'hard').length;
+  document.getElementById('statAnswered').textContent = done;
+  document.getElementById('statRight').textContent = right;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+}
+
+function saveProgress() {
+  localStorage.setItem('pet-r106-' + currentMode, JSON.stringify(answered));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('pet-r106-' + currentMode);
+  answered = saved ? JSON.parse(saved) : {};
+}
+
+function resetProgress() {
+  if (!confirm('重置本模式的進度?')) return;
+  answered = {};
+  localStorage.removeItem('pet-r106-' + currentMode);
+  renderCards();
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const newMode = btn.dataset.mode;
+    modeIdx[currentMode] = getOrder().indexOf(currentIdx);
+    currentMode = newMode;
+    if (newMode !== 'study') reshuffle(newMode);
+    else ensureOrder('study');
+    currentIdx = modeOrder[newMode][modeIdx[newMode]] ?? modeOrder[newMode][0];
+    loadProgress();
+    renderCards();
+  };
+});
+
+ensureOrder('study');
+currentIdx = modeOrder.study[0];
+loadProgress();
+renderCards();
+</script>
+</body>
+</html>

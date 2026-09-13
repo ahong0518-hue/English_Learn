@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PET Round 27 · 旅行 (1/2) · 四模式單字卡</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, 'Segoe UI', 'Microsoft JhengHei', sans-serif;
+    background: #f5f7fa;
+    color: #2c3e50;
+    line-height: 1.6;
+    padding-bottom: 100px;
+  }
+  header {
+    background: linear-gradient(135deg, #2c3e50, #4a6491);
+    color: white;
+    padding: 20px 16px 14px;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .home-link {
+    position: absolute; top: 16px; left: 16px;
+    color: white; text-decoration: none;
+    background: rgba(255,255,255,0.15);
+    padding: 5px 12px; border-radius: 16px;
+    font-size: 0.82rem;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .home-link:hover { background: rgba(255,255,255,0.25); }
+  header h1 { font-size: 1.15rem; }
+  .mode-bar {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  .mode-btn {
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.3);
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .mode-btn:hover { background: rgba(255,255,255,0.25); }
+  .mode-btn.active { background: white; color: #2c3e50; font-weight: 600; }
+
+  main { max-width: 720px; margin: 20px auto; padding: 0 14px; }
+
+  .card {
+    background: white;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+    border-left: 5px solid #4a6491;
+    transition: opacity 0.2s;
+    scroll-margin-top: 130px;
+    position: relative;
+  }
+  .flag-btn {
+    position: absolute; top: 10px; right: 12px;
+    background: none; border: none; font-size: 1.35rem;
+    cursor: pointer; color: #d5dce4; padding: 4px 6px;
+    line-height: 1; z-index: 2;
+    transition: transform 0.15s;
+  }
+  .flag-btn:hover { transform: scale(1.15); }
+  .flag-btn.flagged { color: #f39c12; }
+  .card.flagged { background: linear-gradient(90deg, #fffcf3 0%, white 8%); }
+  #cards.filter-flagged .card:not(.flagged) { display: none; }
+  .tool-btn.on { background: #fff3d6; border-color: #f39c12; color: #a55d00; }
+  .card-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px; height: 28px;
+    background: #4a6491; color: white;
+    border-radius: 50%; font-size: 0.85rem;
+    font-weight: 600; margin-right: 10px;
+    flex-shrink: 0;
+  }
+  .card.family .card-number { background: #27ae60; }
+  .card.confuse .card-number { background: #e67e22; }
+  .card-header {
+    display: flex; align-items: center;
+    cursor: pointer; user-select: none;
+  }
+  .card-header .word-head { margin-bottom: 0; flex: 1; }
+  .expand-icon {
+    color: #7a8ba0; font-size: 0.9rem;
+    transition: transform 0.2s; margin-left: 8px;
+  }
+  .card.expanded .expand-icon { transform: rotate(180deg); }
+  .card-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.3s ease-out;
+  }
+  .card.expanded .card-body {
+    max-height: 2000px;
+    transition: max-height 0.4s ease-in;
+  }
+  .card-body-inner { padding-top: 12px; }
+  .float-nav {
+    position: fixed;
+    bottom: 62px; left: 50%; transform: translateX(-50%);
+    background: white; padding: 8px 12px;
+    border-radius: 30px; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    display: flex; align-items: center; gap: 8px;
+    z-index: 20;
+  }
+  .float-nav.hidden { display: none; }
+  .nav-btn {
+    background: #4a6491; color: white; border: none;
+    width: 44px; height: 44px; border-radius: 50%;
+    font-size: 1.1rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-family: inherit;
+  }
+  .nav-btn:hover { background: #3d5a80; }
+  .nav-btn:disabled { background: #cbd3dd; cursor: not-allowed; }
+  .nav-btn.done { background: #27ae60; }
+  .nav-position {
+    font-size: 0.9rem; color: #3d5a80; font-weight: 600;
+    min-width: 46px; text-align: center;
+  }
+  .toolbar {
+    display: flex; gap: 8px; margin-bottom: 14px;
+    align-items: center; flex-wrap: wrap;
+  }
+  .tool-btn {
+    background: white; border: 1px solid #dce3ec;
+    padding: 6px 14px; border-radius: 18px;
+    font-size: 0.82rem; cursor: pointer; color: #3d5a80;
+    font-family: inherit;
+  }
+  .tool-btn:hover { background: #eef3f9; }
+  .tool-info { font-size: 0.82rem; color: #7a8ba0; margin-left: auto; }
+  .card.family { border-left-color: #27ae60; }
+  .card.confuse { border-left-color: #e67e22; }
+  .card.answered-right { border-left-color: #27ae60; background: #f7fcf9; }
+  .card.answered-wrong { border-left-color: #c0392b; background: #fdf6f4; }
+
+  .word-head {
+    display: flex; align-items: baseline; flex-wrap: wrap; gap: 10px; margin-bottom: 4px;
+  }
+  .word { font-size: 1.6rem; font-weight: 700; color: #2c3e50; }
+  .kk { color: #7a8ba0; font-size: 1.05rem; }
+  .speak {
+    cursor: pointer; background: #eef3f9; border: none; border-radius: 50%;
+    width: 36px; height: 36px; font-size: 1rem;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .speak:hover { background: #d6e2f0; }
+  .speak.big { width: 60px; height: 60px; font-size: 1.6rem; background: #4a6491; color: white; }
+  .speak.big:hover { background: #3d5a80; }
+
+  .pos { color: #3d5a80; font-weight: 600; margin: 6px 0 10px; font-size: 1rem; }
+  .meaning-big { font-size: 1.4rem; color: #2c3e50; font-weight: 600; margin: 10px 0; }
+
+  .row {
+    margin: 8px 0; padding: 8px 12px; border-radius: 8px; font-size: 0.95rem;
+  }
+  .row .label {
+    display: inline-block; background: #4a6491; color: white; font-size: 0.72rem;
+    padding: 2px 8px; border-radius: 10px; margin-right: 8px; vertical-align: middle;
+  }
+  .row.orig { background: #f7f9fc; } .row.orig .label { background: #7a8ba0; }
+  .row.orig + .row.orig { background: #f3f1fa; }
+  .row.orig + .row.orig .label { background: #8e7cc3; }
+  .row.simp { background: #eaf6ee; } .row.simp .label { background: #27ae60; }
+  .row.match { background: #fff8e1; } .row.match .label { background: #f39c12; }
+  .coll-sep { color: #f39c12; font-weight: 700; margin: 0 2px; }
+  .row.family-row { background: #e8f5ea; } .row.family-row .label { background: #27ae60; }
+  .row.confuse-row { background: #fdf1e6; } .row.confuse-row .label { background: #e67e22; }
+  .cn { color: #555; font-size: 0.9rem; }
+
+  .tags { margin-top: 10px; }
+  .tag {
+    display: inline-block; background: #eef3f9; color: #3d5a80;
+    font-size: 0.75rem; padding: 3px 10px; border-radius: 12px; margin-right: 4px;
+  }
+
+  .quiz-input {
+    width: 100%; padding: 10px 14px; font-size: 1.1rem;
+    border: 2px solid #dce3ec; border-radius: 8px; margin: 10px 0;
+    font-family: inherit;
+  }
+  .quiz-input:focus { outline: none; border-color: #4a6491; }
+  .quiz-input.correct { border-color: #27ae60; background: #f7fcf9; }
+  .quiz-input.wrong { border-color: #c0392b; background: #fdf6f4; }
+
+  .quiz-actions {
+    display: flex; gap: 8px; margin: 10px 0;
+  }
+  .btn {
+    padding: 8px 16px; border: none; border-radius: 8px;
+    font-size: 0.9rem; cursor: pointer; font-family: inherit;
+  }
+  .btn-check { background: #4a6491; color: white; }
+  .btn-check:hover { background: #3d5a80; }
+  .btn-reveal { background: #eef3f9; color: #3d5a80; }
+  .btn-reveal:hover { background: #d6e2f0; }
+
+  .rate-row {
+    display: flex; gap: 6px; margin-top: 12px;
+  }
+  .rate-btn {
+    flex: 1; padding: 8px; border: 1px solid #dce3ec; background: white;
+    border-radius: 8px; cursor: pointer; font-size: 0.85rem;
+  }
+  .rate-btn:hover { background: #f5f7fa; }
+  .rate-btn.forgot { color: #c0392b; }
+  .rate-btn.hard { color: #f39c12; }
+  .rate-btn.got { color: #27ae60; }
+
+  .feedback {
+    margin-top: 10px; padding: 10px 12px; border-radius: 8px;
+    font-size: 0.9rem; display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.right { background: #eaf6ee; color: #1e7e4d; }
+  .feedback.wrong { background: #fdf1e6; color: #a83b1c; }
+  .feedback .diff { font-family: monospace; font-size: 1.1rem; margin-top: 4px; }
+  .feedback .diff .miss { color: #c0392b; text-decoration: underline; font-weight: 700; }
+
+  .card-hidden { display: none; }
+  #cards.single-view .card:not(.active) { display: none; }
+  .clickable { cursor: pointer; }
+  .clickable:hover { background: #fafcfe; }
+
+  .progress-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: white; padding: 12px 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.08);
+    display: flex; align-items: center; gap: 14px; font-size: 0.85rem;
+    z-index: 10;
+  }
+  .progress-track {
+    flex: 1; height: 8px; background: #eef3f9; border-radius: 4px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, #4a6491, #27ae60);
+    width: 0%; transition: width 0.3s;
+  }
+  .stats { display: flex; gap: 10px; color: #555; }
+  .stats .right-c { color: #27ae60; font-weight: 600; }
+  .stats .wrong-c { color: #c0392b; font-weight: 600; }
+  .reset-btn {
+    background: #eef3f9; border: none; padding: 6px 12px; border-radius: 6px;
+    cursor: pointer; font-size: 0.8rem; color: #3d5a80;
+  }
+
+  .back {
+    display: inline-block; margin: 8px 6px 0 0;
+    padding: 8px 16px; background: #3d5a80; color: white;
+    text-decoration: none; border-radius: 8px; font-size: 0.9rem;
+  }
+
+  .mode-hint {
+    text-align: center; color: #7a8ba0; font-size: 0.85rem;
+    margin-bottom: 12px; padding: 8px; background: #eef3f9; border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+<header>
+  <a class="home-link" href="index.html">← 首頁</a>
+  <h1>R27 · 旅行 (1/2) · 38 字</h1>
+  <div class="mode-bar">
+    <button class="mode-btn active" data-mode="study">📖 學習</button>
+    <button class="mode-btn" data-mode="en2zh">🇬🇧→🇹🇼 英測中</button>
+    <button class="mode-btn" data-mode="zh2en">🇹🇼→🇬🇧 中測英</button>
+    <button class="mode-btn" data-mode="listen">🔊 聽寫</button>
+  </div>
+</header>
+
+<main>
+  <div class="mode-hint" id="modeHint"></div>
+  <div class="toolbar" id="toolbar"></div>
+  <div id="cards" class="single-view"></div>
+  <a class="back" href="index.html">← 回首頁</a>
+  <a class="back" href="method.html">📖 學習方法</a>
+</main>
+
+<div class="float-nav hidden" id="floatNav">
+  <button class="nav-btn" id="prevBtn" onclick="goPrev()">←</button>
+  <span class="nav-position" id="navPos">1 / 8</span>
+  <button class="nav-btn" id="nextBtn" onclick="goNext()">→</button>
+</div>
+
+<div class="progress-bar">
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="stats">
+    <span>已答 <b id="statAnswered">0</b>/<b id="statTotal">0</b></span>
+    <span class="right-c">✅ <span id="statRight">0</span></span>
+    <span class="wrong-c">❌ <span id="statWrong">0</span></span>
+  </div>
+  <button class="reset-btn" onclick="resetProgress()">重置</button>
+</div>
+
+<script>
+const words = [
+  {
+    "word": "backpack",
+    "kk": "[ˋbækpæk]",
+    "pos": "n.",
+    "meaning": "背包",
+    "exOrig": "There are pencils and books in my backpack.",
+    "exOrigZh": "我的背包裡有鉛筆和 書。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "backpacker",
+    "kk": "[ˋbækpækə(r)]",
+    "pos": "n.",
+    "meaning": "背包客",
+    "exOrig": "The backpacker traveled across Europe on a budget.",
+    "exOrigZh": "那位背包客以省錢的方式遊遍歐洲。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "culture",
+    "kk": "[ˋkʌltʃə(r)]",
+    "pos": "n.",
+    "meaning": "文化；文明",
+    "exOrig": "Learning about local culture makes travel interesting.",
+    "exOrigZh": "了解當地文化讓旅行更有趣。",
+    "exOrig2": "Bacteria grow better in a warm culture inside the laboratory.",
+    "exOrig2Zh": "細菌在實驗室裡溫暖的培養基中生長得更好。",
+    "collocation": "traditional Chinese culture 中國傳統文化",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "hike",
+    "kk": "[haɪk]",
+    "pos": "v.",
+    "meaning": "（在……）徒步旅行，遠足",
+    "exOrig": "We hiked through the forest for three hours.",
+    "exOrigZh": "我們在森林裡徒步走了三個小時。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "baggage",
+    "kk": "[ˋbæɡɪdʒ]",
+    "pos": "n.",
+    "meaning": "行李",
+    "exOrig": "Please keep your baggage with you at all times.",
+    "exOrigZh": "請隨時保管好您的行李。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": "baggage collection 行李領取處",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "camp",
+    "kk": "[kæmp]",
+    "pos": "n.",
+    "meaning": "營地，露營 v 露營",
+    "exOrig": "We camped by the river for two nights.",
+    "exOrigZh": "我們在河邊露營了兩晚。",
+    "exOrig2": "The soldiers set up a camp near the forest.",
+    "exOrig2Zh": "士兵們在森林附近搭起了營地。",
+    "collocation": "go camping 野營",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "camper",
+    "kk": "[ˋkæmpə(r)]",
+    "pos": "n.",
+    "meaning": "露營者",
+    "exOrig": "Every camper brought a sleeping bag and tent.",
+    "exOrigZh": "每位露營者都帶了睡袋和帳篷。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "camping",
+    "kk": "[ˋkæmpɪŋ]",
+    "pos": "n.",
+    "meaning": "野營",
+    "exOrig": "Camping in the mountains is fun in summer.",
+    "exOrigZh": "夏天在山上野營很有趣。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "currency",
+    "kk": "[ˋkʌrənsi]",
+    "pos": "n.",
+    "meaning": "貨幣",
+    "exOrig": "You should exchange currency before your trip.",
+    "exOrigZh": "出發前你應該先換好貨幣。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "cycle",
+    "kk": "[ˋsaɪkl]",
+    "pos": "v.",
+    "meaning": "騎自行車 n 自行車；循環",
+    "exOrig": "As soon as I'd left my house and cycled off, I realised my bag was left in my room.",
+    "exOrigZh": "我剛騎自行車離開家，就意識到我把包落在我的房間裡 了。 現 cycling",
+    "exOrig2": "The water cycle brings rain to the land again and again.",
+    "exOrig2Zh": "水循環一再為大地帶來雨水。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "document",
+    "kk": "[ˋdɒkjumənt]",
+    "pos": "n.",
+    "meaning": "文件",
+    "exOrig": "Keep all your travel documents in a safe place.",
+    "exOrigZh": "把所有旅行文件放在安全的地方。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "expedition",
+    "kk": "[͵ekspəˋdɪʃn]",
+    "pos": "n.",
+    "meaning": "短途出行",
+    "exOrig": "The class went on a short expedition to the park.",
+    "exOrigZh": "全班進行了一次短途出行，前往公園。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "hitchhike",
+    "kk": "[ˋhɪtʃhaɪk]",
+    "pos": "v.",
+    "meaning": "搭便車，搭順風車",
+    "exOrig": "He decided to hitchhike across the country.",
+    "exOrigZh": "他決定搭便車橫越全國。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "hostel",
+    "kk": "[ˋhɒstl]",
+    "pos": "n.",
+    "meaning": "（提供廉價食宿的）招待所",
+    "exOrig": "The hostel offered cheap beds for young travelers.",
+    "exOrigZh": "那家招待所為年輕旅客提供廉價床位。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "barbecue",
+    "kk": "[ˋbɑbɪkju]",
+    "pos": "n.",
+    "meaning": "燒烤野餐v 在烤架上燒烤",
+    "exOrig": "We had a barbecue in the garden last Sunday.",
+    "exOrigZh": "上週日我們在花園裡舉辦了燒烤野餐。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "campsite",
+    "kk": "[ˋkæmpsaɪt]",
+    "pos": "n.",
+    "meaning": "野營地",
+    "exOrig": "The campsite had clean bathrooms and running water.",
+    "exOrigZh": "那個野營地有乾淨的廁所和自來水。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "abroad",
+    "kk": "[əˋbrɔd]",
+    "pos": "adv.",
+    "meaning": "在國外；到國外",
+    "exOrig": "Adams has never lived abroad before.",
+    "exOrigZh": "亞當斯之前從未在國外生活 過。",
+    "exOrig2": "News of the discovery spread abroad quickly through social media.",
+    "exOrig2Zh": "這項發現的消息透過社群媒體迅速廣泛傳開。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "accommodation",
+    "kk": "[ə͵kɒməˋdeɪʃn]",
+    "pos": "n.",
+    "meaning": "住處；膳宿",
+    "exOrig": "Meals, overnight accommodation and coffee are included in the price.",
+    "exOrigZh": "三餐、過夜住宿和咖啡均包含在費用內。",
+    "exOrig2": "The school made special accommodation for students with hearing difficulties.",
+    "exOrig2Zh": "學校為有聽力困難的學生做出了特別的安排。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "adventure",
+    "kk": "[ədˋventʃə(r)]",
+    "pos": "n.",
+    "meaning": "冒險",
+    "exOrig": "You should definitely try the adventure park near the beach—it's cool.",
+    "exOrigZh": "你一定要去海灘附",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": "an adventure story 一個歷險故事",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "book",
+    "kk": "[bʊk]",
+    "pos": "v.",
+    "meaning": "預訂 n 書，書籍",
+    "exOrig": "It is important to book the hotel in advance during travel.",
+    "exOrigZh": "旅行時提 前訂酒店很重要。",
+    "exOrig2": "She finished reading her book before bed.",
+    "exOrig2Zh": "她在睡前看完了她的書。",
+    "collocation": "story book 故事書",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "climber",
+    "kk": "[ˋklaɪmə(r)]",
+    "pos": "n.",
+    "meaning": "登山者",
+    "exOrig": "The climber reached the top of the mountain.",
+    "exOrigZh": "那位登山者抵達了山頂。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "custom",
+    "kk": "[ˋkʌstəm]",
+    "pos": "n.",
+    "meaning": "風俗；慣",
+    "exOrig": "；[pl.] 海关；关税",
+    "exOrigZh": null,
+    "exOrig2": "It is a custom in our family to eat dumplings on New Year's Eve.",
+    "exOrig2Zh": "在除夕夜吃餃子是我們家的習俗。",
+    "collocation": "customs officer 報關員",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "cyclist",
+    "kk": "[ˋsaɪklɪst]",
+    "pos": "n.",
+    "meaning": "騎自行車的人",
+    "exOrig": "The cyclist wore a helmet for safety.",
+    "exOrigZh": "那位騎自行車的人為了安全戴上了安全帽。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "distant",
+    "kk": "[ˋdɪstənt]",
+    "pos": "adj.",
+    "meaning": "遙遠的",
+    "exOrig": "We could see a distant mountain through the clouds.",
+    "exOrigZh": "我們透過雲層看到了一座遙遠的山。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "dollar",
+    "kk": "[ˋdɒlə(r)]",
+    "pos": "n.",
+    "meaning": "美元；元（加拿大、澳大利亞等國貨幣單位）",
+    "exOrig": "The book costs five dollars at the bookstore.",
+    "exOrigZh": "那本書在書店賣五美元。",
+    "exOrig2": "The Australian dollar is the official currency used in Australia.",
+    "exOrig2Zh": "澳元是澳大利亞使用的官方貨幣。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "duty-free",
+    "kk": "[͵djuti ˋfri]",
+    "pos": "adj.",
+    "meaning": "免稅的 n 免稅商品",
+    "exOrig": "She bought duty-free perfume at the airport.",
+    "exOrigZh": "她在機場買了免稅香水。",
+    "exOrig2": "He picked up some duty-free chocolates as gifts for his family.",
+    "exOrig2Zh": "他買了一些免稅巧克力作為送給家人的禮物。",
+    "collocation": "duty-free shop 免稅店 DVD [ˌdiːviːˈdiː]",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "embassy",
+    "kk": "[ˋembəsi]",
+    "pos": "n.",
+    "meaning": "大使館",
+    "exOrig": "He went to the embassy to get a new passport.",
+    "exOrigZh": "他去大使館辦理新護照。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": "embassy officials 大使館官員",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "euro",
+    "kk": "[ˋjʊərəʊ]",
+    "pos": "",
+    "meaning": "",
+    "exOrig": "The meal cost twenty euros at the restaurant.",
+    "exOrigZh": "那頓飯在餐廳花了二十歐元。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "explore",
+    "kk": "[ɪkˋsplɔ(r)]",
+    "pos": "v.",
+    "meaning": "探索；探險",
+    "exOrig": "The students carried out an experiment to explore what different areas on the Earth look like from space.",
+    "exOrigZh": "這些學生做了一個實驗來探索從太 空看地球的不",
+    "exOrig2": "We explored the old town on foot and found many hidden streets.",
+    "exOrig2Zh": "我們步行探索老城區，發現了許多隱藏的小巷。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "facility",
+    "kk": "[fəˋsɪləti]",
+    "pos": "n.",
+    "meaning": "設備；設施",
+    "exOrig": "The campsite has great cooking facilities.",
+    "exOrigZh": "那個野營地有很好的烹飪設施。",
+    "exOrig2": "The new school has a gym facility open to all students after class.",
+    "exOrig2Zh": "新學校有一間課後開放給所有學生使用的健身設施。",
+    "collocation": "leisure facility 休閒設施 復 facilities",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "foreign",
+    "kk": "[ˋfɒrən]",
+    "pos": "adj.",
+    "meaning": "國外的；外國的；對外的；外來的",
+    "exOrig": "The boy wants to make more foreign friends.",
+    "exOrigZh": "那個男孩想交更多外  國朋友。",
+    "exOrig2": "There are many foreign words in English that come from French.",
+    "exOrig2Zh": "英語中有許多來自法語的外來詞。",
+    "collocation": "foreign language 外語",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "guide",
+    "kk": "[ɡaɪd]",
+    "pos": "n.",
+    "meaning": "導遊；指南 v 帶領；指導",
+    "exOrig": "The class was taken around the museum by a guide.",
+    "exOrigZh": "全班在一名向 導的帶領下參觀了博物館。",
+    "exOrig2": "This travel guide tells you the best places to eat in the city.",
+    "exOrig2Zh": "這本旅遊指南告訴你城市裡最好的用餐地點。",
+    "collocation": "guide book 指南",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "hitchhiker",
+    "kk": "[ˋhɪtʃhaɪkə(r)]",
+    "pos": "n.",
+    "meaning": "n",
+    "exOrig": "The driver stopped to pick up a hitchhiker.",
+    "exOrigZh": "司機停車載了一位搭便車的旅行者。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": "便車的旅行者",
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "hotel",
+    "kk": "[həʊˋtel]",
+    "pos": "n.",
+    "meaning": "旅館",
+    "exOrig": "We booked a hotel near the beach for a week.",
+    "exOrigZh": "我們在海灘附近訂了一週的旅館。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "inn",
+    "kk": "[ɪn]",
+    "pos": "n.",
+    "meaning": "小旅館",
+    "exOrig": "The old inn had a warm fireplace inside.",
+    "exOrigZh": "那家古老的小旅館裡有溫暖的壁爐。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "journey",
+    "kk": "[ˋdʒɝni]",
+    "pos": "n.",
+    "meaning": "旅行，旅程",
+    "exOrig": "On Thursday we set off on the final leg of our journey.",
+    "exOrigZh": "星期四我們 踏上了最後一段旅程。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "leisure",
+    "kk": "[ˋleʒə(r)]",
+    "pos": "n.",
+    "meaning": "空閒；閒暇",
+    "exOrig": "She spends her leisure time reading books.",
+    "exOrigZh": "她把閒暇時間用來看書。",
+    "exOrig2": "The park was designed as a leisure centre with sports courts and gardens.",
+    "exOrig2Zh": "這座公園被規劃為一個休閒中心，設有運動場和花園。",
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "map",
+    "kk": "[mæp]",
+    "pos": "n.",
+    "meaning": "地圖",
+    "exOrig": "He used a map to find the campsite.",
+    "exOrigZh": "他用地圖找到了野營地。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R27"
+    ],
+    "type": "normal"
+  }
+];
+
+const HINTS = {
+  study:  '📖 全部展開,第一次學:看+聽+跟讀 3 次',
+  en2zh:  '🇬🇧→🇹🇼 看英文想中文,點卡片翻面驗證',
+  zh2en:  '🇹🇼→🇬🇧 看中文拼英文,拼錯不擦,看差在哪',
+  listen: '🔊 只聽發音打字,最強記憶模式(聽+寫+視覺三合一)'
+};
+
+let currentMode = 'study';
+let answered = {};
+let flags = JSON.parse(localStorage.getItem('pet-r27-flags') || '{}');
+let modeOrder = { study: null, en2zh: null, zh2en: null, listen: null };
+let modeIdx = { study: 0, en2zh: 0, zh2en: 0, listen: 0 };
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function ensureOrder(mode) {
+  if (!modeOrder[mode]) {
+    const seq = words.map((_, i) => i);
+    modeOrder[mode] = (mode === 'study') ? seq : shuffle(seq);
+  }
+  return modeOrder[mode];
+}
+
+function reshuffle(mode) {
+  const seq = words.map((_, i) => i);
+  modeOrder[mode] = shuffle(seq);
+  modeIdx[mode] = 0;
+}
+
+function getOrder() { return ensureOrder(currentMode); }
+
+function saveFlags() { localStorage.setItem('pet-r27-flags', JSON.stringify(flags)); }
+function setFlag(i, on) {
+  if (on) flags[i] = true; else delete flags[i];
+  saveFlags();
+  const card = document.getElementById(`card-${i}`);
+  if (!card) return;
+  card.classList.toggle('flagged', !!flags[i]);
+  const btn = card.querySelector('.flag-btn');
+  if (btn) {
+    btn.classList.toggle('flagged', !!flags[i]);
+    btn.textContent = flags[i] ? '⭐' : '☆';
+  }
+  updateFlagCount();
+}
+function toggleFlag(i) { setFlag(i, !flags[i]); }
+function updateFlagCount() {
+  const el = document.getElementById('flagCount');
+  if (el) el.textContent = Object.keys(flags).length;
+}
+
+function ttsUrl(w) {
+  return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
+}
+
+let currentAudio = null;
+let lastAudioTime = 0;
+function playAudio(word) {
+  const now = Date.now();
+  if (now - lastAudioTime < 250) return;
+  lastAudioTime = now;
+  if (currentAudio) {
+    try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
+  }
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+  currentAudio = new Audio(ttsUrl(word));
+  currentAudio.play().catch(() => {
+    if ('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US'; u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    }
+  });
+}
+
+function renderCards() {
+  const container = document.getElementById('cards');
+  container.innerHTML = '';
+  document.getElementById('modeHint').textContent = HINTS[currentMode];
+  document.getElementById('statTotal').textContent = words.length;
+  renderToolbar();
+
+  words.forEach((w, i) => {
+    const card = document.createElement('div');
+    card.className = `card ${w.type}`;
+    card.id = `card-${i}`;
+    if (i === currentIdx) card.classList.add('active', 'expanded');
+    if (flags[i]) card.classList.add('flagged');
+    card.innerHTML = `<button class="flag-btn ${flags[i]?'flagged':''}" onclick="event.stopPropagation();toggleFlag(${i})" title="標記疑難字">${flags[i]?'⭐':'☆'}</button>` + renderCardContent(w, i);
+    container.appendChild(card);
+  });
+  updateProgress();
+  updateFloatNav();
+}
+
+function renderToolbar() {
+  const tb = document.getElementById('toolbar');
+  const cont = document.getElementById('cards');
+  const filterOn = cont.classList.contains('filter-flagged');
+  const isQuiz = currentMode !== 'study';
+  tb.innerHTML = `
+    <button class="tool-btn" onclick="toggleAllView()">📖 全部展開 / 單張</button>
+    <button class="tool-btn ${filterOn?'on':''}" id="filterBtn" onclick="toggleFilter()">🚩 只看疑難 (<span id="flagCount">0</span>)</button>
+    ${isQuiz ? `<button class="tool-btn" onclick="reshuffleNow()">🔀 重新洗牌</button>` : ''}
+    <span class="tool-info">← → 切換</span>
+  `;
+  updateFlagCount();
+}
+
+function reshuffleNow() {
+  reshuffle(currentMode);
+  currentIdx = modeOrder[currentMode][0];
+  renderCards();
+}
+
+function toggleFilter() {
+  const cont = document.getElementById('cards');
+  const willTurnOn = !cont.classList.contains('filter-flagged');
+  const btn = document.getElementById('filterBtn');
+
+  if (willTurnOn) {
+    const flagged = Object.keys(flags).map(Number).sort((a,b)=>a-b);
+    if (flagged.length === 0) {
+      alert('目前沒有疑難字。答錯或按 ⭐ 標記後,可以只看疑難複習。');
+      return;
+    }
+    cont.classList.add('filter-flagged');
+    btn.classList.add('on');
+    if (!flags[currentIdx]) goToCard(flagged[0]);
+    else updateFloatNav();
+  } else {
+    cont.classList.remove('filter-flagged');
+    btn.classList.remove('on');
+    updateFloatNav();
+  }
+}
+
+function toggleAllView() {
+  const cont = document.getElementById('cards');
+  cont.classList.toggle('single-view');
+  if (cont.classList.contains('single-view')) {
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('expanded'));
+    const cur = document.getElementById(`card-${currentIdx}`);
+    if (cur) cur.classList.add('expanded', 'active');
+  } else {
+    document.querySelectorAll('.card').forEach(c => c.classList.add('expanded'));
+  }
+  updateFloatNav();
+}
+
+let currentIdx = 0;
+
+function toggleCard(i) {
+  const card = document.getElementById(`card-${i}`);
+  card.classList.toggle('expanded');
+  if (card.classList.contains('expanded')) {
+    currentIdx = i;
+    updateFloatNav();
+    playAudio(words[i].word);
+  }
+}
+
+function scrollToCard(i) {
+  const card = document.getElementById(`card-${i}`);
+  if (!card) return;
+  const headerH = document.querySelector('header').offsetHeight;
+  const y = card.getBoundingClientRect().top + window.pageYOffset - headerH - 16;
+  window.scrollTo({top: y, behavior: 'smooth'});
+}
+
+function goToCard(i) {
+  if (i < 0 || i >= words.length) return;
+  const cur = document.getElementById(`card-${currentIdx}`);
+  const next = document.getElementById(`card-${i}`);
+
+  const bodies = document.querySelectorAll('.card-body');
+  bodies.forEach(b => b.style.transition = 'none');
+
+  if (cur) { cur.classList.remove('expanded', 'active'); }
+  next.classList.add('expanded', 'active');
+
+  void next.offsetHeight;
+
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  setTimeout(() => bodies.forEach(b => b.style.transition = ''), 60);
+
+  currentIdx = i;
+  modeIdx[currentMode] = getOrder().indexOf(i);
+  updateFloatNav();
+  if (currentMode !== 'zh2en') playAudio(words[i].word);
+
+  const input = next.querySelector('input.quiz-input');
+  if (input) setTimeout(() => input.focus(), 200);
+}
+
+function visibleIndices() {
+  const cont = document.getElementById('cards');
+  const filterOn = cont.classList.contains('filter-flagged');
+  const order = getOrder();
+  return order.filter(i => !filterOn || flags[i]);
+}
+
+function goPrev() {
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  if (pos > 0) goToCard(v[pos - 1]);
+  else if (pos === -1 && v.length) goToCard(v[v.length - 1]);
+}
+
+function goNext() {
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  if (pos >= 0 && pos < v.length - 1) goToCard(v[pos + 1]);
+  else if (pos === -1 && v.length) goToCard(v[0]);
+}
+
+function updateFloatNav() {
+  const nav = document.getElementById('floatNav');
+  const cont = document.getElementById('cards');
+  const singleView = cont.classList.contains('single-view');
+  if (!singleView) { nav.classList.add('hidden'); return; }
+  nav.classList.remove('hidden');
+  const v = visibleIndices();
+  const pos = v.indexOf(currentIdx);
+  const displayPos = pos >= 0 ? pos + 1 : 0;
+  document.getElementById('navPos').textContent = `${displayPos} / ${v.length}`;
+  document.getElementById('prevBtn').disabled = (pos <= 0);
+  const nextBtn = document.getElementById('nextBtn');
+  const atLast = (pos === v.length - 1);
+  nextBtn.disabled = atLast;
+  if (atLast) {
+    nextBtn.classList.add('done');
+    nextBtn.textContent = '✓';
+  } else {
+    nextBtn.classList.remove('done');
+    nextBtn.textContent = '→';
+  }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goPrev();
+});
+
+function fmtCollocation(s) {
+  // Split after a Chinese/non-ASCII char before an English word start
+  const parts = s.split(/(?<=[^\x00-\x7f])\s+(?=[a-zA-Z\(（])/);
+  if (parts.length <= 1) return s;
+  return parts.join(' <span class="coll-sep">·</span> ');
+}
+
+function renderCardContent(w, i) {
+  const num = `<div class="card-number">${i+1}</div>`;
+  const audioBtn = `<button class="speak" onclick="event.stopPropagation();playAudio('${w.word}')">🔊</button>`;
+  const bigAudioBtn = `<button class="speak big" onclick="playAudio('${w.word}')">🔊</button>`;
+
+  const fullInfo = `
+    <div class="pos">${w.pos} ${w.meaning}</div>
+    ${w.exOrig ? `<div class="row orig"><span class="label">例句</span>${w.exOrig}<br><span class="cn">${w.exOrigZh}</span></div>` : ''}
+    ${w.exOrig2 ? `<div class="row orig"><span class="label">另義</span>${w.exOrig2}<br><span class="cn">${w.exOrig2Zh}</span></div>` : ''}
+    ${w.antonym ? `<div class="row confuse-row"><span class="label">反義</span>${w.antonym}</div>` : ''}
+    ${w.collocation ? `<div class="row match"><span class="label">搭配</span>${fmtCollocation(w.collocation)}</div>` : ''}
+    ${w.family ? `<div class="row family-row"><span class="label">字族</span>${w.family}</div>` : ''}
+    ${w.contrast ? `<div class="row confuse-row"><span class="label">對比</span>${w.contrast}</div>` : ''}
+    <div class="tags">${w.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>
+  `;
+
+  if (currentMode === 'study') {
+    return `
+      <div class="card-header" onclick="toggleCard(${i})">
+        ${num}
+        <div class="word-head"><span class="word">${w.word}</span><span class="kk">${w.kk}</span>${audioBtn}</div>
+        <span class="expand-icon">▼</span>
+      </div>
+      <div class="card-body"><div class="card-body-inner">
+        ${fullInfo}
+      </div></div>
+    `;
+  }
+
+  if (currentMode === 'en2zh') {
+    return `
+      <div class="clickable" onclick="flipCard(${i})">
+        <div style="display:flex;align-items:center">
+          ${num}
+          <div class="word-head" style="flex:1"><span class="word">${w.word}</span><span class="kk">${w.kk}</span>${audioBtn}</div>
+        </div>
+        <div id="back-${i}" class="card-hidden">${fullInfo}</div>
+        <div id="hint-${i}" style="color:#7a8ba0;font-size:0.85rem;margin-top:8px">👆 想好中文意思後,點卡片翻面</div>
+      </div>
+      <div id="rate-${i}" class="rate-row card-hidden">
+        <button class="rate-btn forgot" onclick="rate(${i},'wrong')">😅 忘了</button>
+        <button class="rate-btn hard" onclick="rate(${i},'hard')">🙂 有點難</button>
+        <button class="rate-btn got" onclick="rate(${i},'right')">😎 會了</button>
+      </div>
+    `;
+  }
+
+  if (currentMode === 'zh2en') {
+    return `
+      <div style="display:flex;align-items:center;margin-bottom:6px">${num}<span style="color:#7a8ba0;font-size:0.85rem">第 ${i+1} 題</span></div>
+      <div class="meaning-big">${w.meaning}</div>
+      <div class="pos" style="font-size:0.85rem">${w.pos}${w.exSimpZh ? ' · 提示例句:' + w.exSimpZh : ''}</div>
+      <input type="text" class="quiz-input" id="input-${i}" placeholder="輸入英文單字..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')handleEnter(${i})">
+      <div class="quiz-actions">
+        <button class="btn btn-check" onclick="checkSpelling(${i})">檢查</button>
+        <button class="btn btn-reveal" onclick="revealAnswer(${i})">看答案</button>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+  }
+
+  if (currentMode === 'listen') {
+    return `
+      <div style="display:flex;align-items:center;margin-bottom:6px">${num}<span style="color:#7a8ba0;font-size:0.85rem">第 ${i+1} 題</span></div>
+      <div style="text-align:center;margin:10px 0">${bigAudioBtn}</div>
+      <div style="text-align:center;color:#7a8ba0;font-size:0.85rem;margin-bottom:8px">聽發音,拼寫出來</div>
+      <input type="text" class="quiz-input" id="input-${i}" placeholder="打字..." autocomplete="off" spellcheck="false" onkeydown="if(event.key==='Enter')handleEnter(${i})">
+      <div class="quiz-actions">
+        <button class="btn btn-check" onclick="checkSpelling(${i})">檢查</button>
+        <button class="btn btn-reveal" onclick="revealAnswer(${i})">看答案</button>
+      </div>
+      <div class="feedback" id="fb-${i}"></div>
+    `;
+  }
+}
+
+function flipCard(i) {
+  document.getElementById(`back-${i}`).classList.remove('card-hidden');
+  document.getElementById(`hint-${i}`).style.display = 'none';
+  document.getElementById(`rate-${i}`).classList.remove('card-hidden');
+  playAudio(words[i].word);
+}
+
+function rate(i, result) {
+  answered[i] = result;
+  const card = document.getElementById(`card-${i}`);
+  card.classList.remove('answered-right','answered-wrong');
+  if (result === 'right') { card.classList.add('answered-right'); setFlag(i, false); }
+  else if (result === 'wrong') { card.classList.add('answered-wrong'); setFlag(i, true); }
+  else if (result === 'hard') { setFlag(i, true); }
+  saveProgress();
+  updateProgress();
+}
+
+function handleEnter(i) {
+  const input = document.getElementById(`input-${i}`);
+  if (input.classList.contains('correct')) {
+    goNext();
+  } else {
+    checkSpelling(i);
+  }
+}
+
+function checkSpelling(i) {
+  const input = document.getElementById(`input-${i}`);
+  const fb = document.getElementById(`fb-${i}`);
+  const user = input.value.trim().toLowerCase();
+  const correct = words[i].word.toLowerCase();
+
+  if (!user) return;
+
+  if (user === correct) {
+    input.classList.remove('wrong'); input.classList.add('correct');
+    fb.className = 'feedback show right';
+    fb.innerHTML = `✅ 答對了!<div style="margin-top:6px">${words[i].word} ${words[i].kk} — ${words[i].pos} ${words[i].meaning}</div>`;
+    answered[i] = 'right';
+    setFlag(i, false);
+  } else {
+    input.classList.remove('correct'); input.classList.add('wrong');
+    fb.className = 'feedback show wrong';
+    fb.innerHTML = `❌ 差一點!你寫的:<b>${input.value}</b><br>正解:<span class="diff">${diffMark(user, correct)}</span><div style="margin-top:6px">${words[i].kk} — ${words[i].pos} ${words[i].meaning}</div>`;
+    answered[i] = 'wrong';
+    setFlag(i, true);
+  }
+  playAudio(words[i].word);
+  saveProgress(); updateProgress();
+}
+
+function diffMark(user, correct) {
+  let html = '';
+  for (let k = 0; k < correct.length; k++) {
+    if (user[k] === correct[k]) html += correct[k];
+    else html += `<span class="miss">${correct[k]}</span>`;
+  }
+  return html;
+}
+
+function revealAnswer(i) {
+  const fb = document.getElementById(`fb-${i}`);
+  fb.className = 'feedback show wrong';
+  fb.innerHTML = `答案:<b style="font-size:1.2rem">${words[i].word}</b> ${words[i].kk}<div>${words[i].pos} ${words[i].meaning}</div>`;
+  playAudio(words[i].word);
+  answered[i] = 'wrong';
+  setFlag(i, true);
+  saveProgress(); updateProgress();
+}
+
+function updateProgress() {
+  const total = words.length;
+  const done = Object.keys(answered).length;
+  const right = Object.values(answered).filter(r => r === 'right').length;
+  const wrong = Object.values(answered).filter(r => r === 'wrong' || r === 'hard').length;
+  document.getElementById('statAnswered').textContent = done;
+  document.getElementById('statRight').textContent = right;
+  document.getElementById('statWrong').textContent = wrong;
+  document.getElementById('progressFill').style.width = (done / total * 100) + '%';
+}
+
+function saveProgress() {
+  localStorage.setItem('pet-r27-' + currentMode, JSON.stringify(answered));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('pet-r27-' + currentMode);
+  answered = saved ? JSON.parse(saved) : {};
+}
+
+function resetProgress() {
+  if (!confirm('重置本模式的進度?')) return;
+  answered = {};
+  localStorage.removeItem('pet-r27-' + currentMode);
+  renderCards();
+}
+
+document.querySelectorAll('.mode-btn').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const newMode = btn.dataset.mode;
+    modeIdx[currentMode] = getOrder().indexOf(currentIdx);
+    currentMode = newMode;
+    if (newMode !== 'study') reshuffle(newMode);
+    else ensureOrder('study');
+    currentIdx = modeOrder[newMode][modeIdx[newMode]] ?? modeOrder[newMode][0];
+    loadProgress();
+    renderCards();
+  };
+});
+
+ensureOrder('study');
+currentIdx = modeOrder.study[0];
+loadProgress();
+renderCards();
+</script>
+</body>
+</html>

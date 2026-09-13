@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PET 核心單字學習</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, 'Segoe UI', 'Microsoft JhengHei', sans-serif; background: #f0f2f5; color: #2c3e50; min-height: 100vh; }
+  header { background: linear-gradient(135deg, #2c3e50, #4a6491); color: white; padding: 28px 20px 22px; text-align: center; }
+  header h1 { font-size: 1.4rem; }
+  header p { opacity: 0.8; font-size: 0.85rem; margin-top: 6px; }
+  main { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+  .method-card { display: flex; align-items: center; gap: 14px; background: linear-gradient(90deg,#fff8e1,white); border-left: 4px solid #f39c12; border-radius: 12px; padding: 14px 18px; text-decoration: none; color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.06); margin-bottom: 24px; max-width: 720px; }
+  .method-card .icon { font-size: 1.6rem; }
+  .method-card .title { font-size: 1rem; font-weight: 600; }
+  .method-card .desc { font-size: 0.8rem; color: #7a8ba0; margin-top: 3px; }
+  .topics-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
+  .topic-section { background: white; border-radius: 12px; padding: 12px 14px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); }
+  .topic-header { display: flex; align-items: baseline; gap: 8px; padding: 4px 4px 8px; margin-bottom: 8px; border-bottom: 2px solid #eef3f9; }
+  .topic-num { background: #4a6491; color: white; font-size: 0.75rem; padding: 3px 8px; border-radius: 12px; font-weight: 600; }
+  .topic-zh { font-size: 0.95rem; font-weight: 600; color: #2c3e50; }
+  .topic-en { font-size: 0.72rem; color: #7a8ba0; font-family: 'Segoe UI'; margin-left: auto; }
+  a.card { display: flex; align-items: center; gap: 10px; background: #f7f9fc; border-radius: 8px; padding: 8px 10px; text-decoration: none; color: inherit; margin-bottom: 5px; transition: background 0.15s; }
+  a.card:hover { background: #eef3f9; }
+  .round-num { background: white; color: #3d5a80; font-weight: 700; font-size: 0.78rem; padding: 4px 8px; border-radius: 6px; font-family: 'Segoe UI'; border: 1px solid #dce3ec; }
+  .round-info { flex: 1; min-width: 0; }
+  .round-title { font-size: 0.82rem; font-weight: 500; }
+  .round-preview { font-size: 0.7rem; color: #7a8ba0; margin-top: 2px; font-family: 'Segoe UI'; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .misc-section { background: white; border-radius: 12px; padding: 16px 18px; box-shadow: 0 1px 6px rgba(0,0,0,0.05); margin-top: 24px; }
+  .misc-header { display: flex; align-items: baseline; gap: 8px; padding: 4px 4px 10px; margin-bottom: 10px; border-bottom: 2px solid #eef3f9; }
+  .misc-header .topic-zh { font-size: 1.05rem; }
+  .misc-count { font-size: 0.75rem; color: #7a8ba0; margin-left: auto; }
+  .misc-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 6px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>PET 核心單字學習</h1>
+  <p>3244 字 · 108 回合 · 50 個主題分類 · 腦科學排序</p>
+</header>
+<main>
+  <a class="method-card" href="method.html">
+    <div class="icon">🧠</div>
+    <div>
+      <div class="title">學習方法(腦科學版)</div>
+      <div class="desc">六大原則 · 3 回合流程 · 3-2-1 複習節奏</div>
+    </div>
+  </a>
+
+  <div class="topics-grid">
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">01</span>
+      <span class="topic-zh">教學與學習</span>
+      <span class="topic-en">Teaching and Studying</span>
+    </div>
+    <a class="card" href="Round-01.html">
+      <div class="round-num">R01</div>
+      <div class="round-info">
+        <div class="round-title">32 字 · 第 1/3</div>
+        <div class="round-preview">class … graduation</div>
+      </div>
+    </a>
+    <a class="card" href="Round-02.html">
+      <div class="round-num">R02</div>
+      <div class="round-info">
+        <div class="round-title">32 字 · 第 2/3</div>
+        <div class="round-preview">learn … register</div>
+      </div>
+    </a>
+    <a class="card" href="Round-03.html">
+      <div class="round-num">R03</div>
+      <div class="round-info">
+        <div class="round-title">31 字 · 第 3/3</div>
+        <div class="round-preview">teach … write down</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">02</span>
+      <span class="topic-zh">大洲與地區</span>
+      <span class="topic-en">Continents and Regions</span>
+    </div>
+    <a class="card" href="Round-04.html">
+      <div class="round-num">R04</div>
+      <div class="round-info">
+        <div class="round-title">7 字</div>
+        <div class="round-preview">Africa … zone</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">03</span>
+      <span class="topic-zh">國家、語言與國籍</span>
+      <span class="topic-en">Countries, Languages and Nationalities</span>
+    </div>
+    <a class="card" href="Round-05.html">
+      <div class="round-num">R05</div>
+      <div class="round-info">
+        <div class="round-title">22 字 · 第 1/2</div>
+        <div class="round-preview">Brazil … Ireland</div>
+      </div>
+    </a>
+    <a class="card" href="Round-06.html">
+      <div class="round-num">R06</div>
+      <div class="round-info">
+        <div class="round-title">21 字 · 第 2/2</div>
+        <div class="round-preview">Poland … Turkey</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">04</span>
+      <span class="topic-zh">房屋與家</span>
+      <span class="topic-en">House and Home</span>
+    </div>
+    <a class="card" href="Round-07.html">
+      <div class="round-num">R07</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 1/3</div>
+        <div class="round-preview">conditioning … DVD</div>
+      </div>
+    </a>
+    <a class="card" href="Round-08.html">
+      <div class="round-num">R08</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 2/3</div>
+        <div class="round-preview">garage … refrigerator</div>
+      </div>
+    </a>
+    <a class="card" href="Round-09.html">
+      <div class="round-num">R09</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 3/3</div>
+        <div class="round-preview">roof … video recorder</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">05</span>
+      <span class="topic-zh">日常生活</span>
+      <span class="topic-en">Daily Life</span>
+    </div>
+    <a class="card" href="Round-10.html">
+      <div class="round-num">R10</div>
+      <div class="round-info">
+        <div class="round-title">18 字</div>
+        <div class="round-preview">go jogging … meet friends</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">06</span>
+      <span class="topic-zh">特殊場合</span>
+      <span class="topic-en">Special Occasions</span>
+    </div>
+    <a class="card" href="Round-11.html">
+      <div class="round-num">R11</div>
+      <div class="round-info">
+        <div class="round-title">22 字</div>
+        <div class="round-preview">celebrate … wedding</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">07</span>
+      <span class="topic-zh">購物</span>
+      <span class="topic-en">Shopping</span>
+    </div>
+    <a class="card" href="Round-12.html">
+      <div class="round-num">R12</div>
+      <div class="round-info">
+        <div class="round-title">29 字 · 第 1/2</div>
+        <div class="round-preview">charge … mall</div>
+      </div>
+    </a>
+    <a class="card" href="Round-13.html">
+      <div class="round-num">R13</div>
+      <div class="round-info">
+        <div class="round-title">29 字 · 第 2/2</div>
+        <div class="round-preview">reasonable … travel agent</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">08</span>
+      <span class="topic-zh">申請工作</span>
+      <span class="topic-en">Applying for a Job</span>
+    </div>
+    <a class="card" href="Round-14.html">
+      <div class="round-num">R14</div>
+      <div class="round-info">
+        <div class="round-title">4 字</div>
+        <div class="round-preview">application form … apply for a job</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">09</span>
+      <span class="topic-zh">食物</span>
+      <span class="topic-en">Food</span>
+    </div>
+    <a class="card" href="Round-15.html">
+      <div class="round-num">R15</div>
+      <div class="round-info">
+        <div class="round-title">36 字 · 第 1/3</div>
+        <div class="round-preview">cheese … fruit</div>
+      </div>
+    </a>
+    <a class="card" href="Round-16.html">
+      <div class="round-num">R16</div>
+      <div class="round-info">
+        <div class="round-title">36 字 · 第 2/3</div>
+        <div class="round-preview">pea … slice</div>
+      </div>
+    </a>
+    <a class="card" href="Round-17.html">
+      <div class="round-num">R17</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 3/3</div>
+        <div class="round-preview">steak … out of work</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">10</span>
+      <span class="topic-zh">飲料</span>
+      <span class="topic-en">Drink</span>
+    </div>
+    <a class="card" href="Round-18.html">
+      <div class="round-num">R18</div>
+      <div class="round-info">
+        <div class="round-title">13 字</div>
+        <div class="round-preview">coffee … soft drink</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">11</span>
+      <span class="topic-zh">商業</span>
+      <span class="topic-en">Business</span>
+    </div>
+    <a class="card" href="Round-19.html">
+      <div class="round-num">R19</div>
+      <div class="round-info">
+        <div class="round-title">22 字 · 第 1/2</div>
+        <div class="round-preview">building … factory</div>
+      </div>
+    </a>
+    <a class="card" href="Round-20.html">
+      <div class="round-num">R20</div>
+      <div class="round-info">
+        <div class="round-title">22 字 · 第 2/2</div>
+        <div class="round-preview">machine … on strike</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">12</span>
+      <span class="topic-zh">通信/交流</span>
+      <span class="topic-en">Communications</span>
+    </div>
+    <a class="card" href="Round-21.html">
+      <div class="round-num">R21</div>
+      <div class="round-info">
+        <div class="round-title">32 字</div>
+        <div class="round-preview">communicate … hang up</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">13</span>
+      <span class="topic-zh">外貌/外觀</span>
+      <span class="topic-en">Appearances</span>
+    </div>
+    <a class="card" href="Round-22.html">
+      <div class="round-num">R22</div>
+      <div class="round-info">
+        <div class="round-title">40 字</div>
+        <div class="round-preview">charming … youth</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">14</span>
+      <span class="topic-zh">個人</span>
+      <span class="topic-en">Personal Feelings and Experiences</span>
+    </div>
+    <a class="card" href="Round-23.html">
+      <div class="round-num">R23</div>
+      <div class="round-info">
+        <div class="round-title">38 字 · 第 1/2</div>
+        <div class="round-preview">disappointed … fantastic</div>
+      </div>
+    </a>
+    <a class="card" href="Round-24.html">
+      <div class="round-num">R24</div>
+      <div class="round-info">
+        <div class="round-title">38 字 · 第 2/2</div>
+        <div class="round-preview">lonely … be keen on</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">15</span>
+      <span class="topic-zh">城鎮與城市</span>
+      <span class="topic-en">Town and City</span>
+    </div>
+    <a class="card" href="Round-25.html">
+      <div class="round-num">R25</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 1/2</div>
+        <div class="round-preview">cafeteria … market</div>
+      </div>
+    </a>
+    <a class="card" href="Round-26.html">
+      <div class="round-num">R26</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 2/2</div>
+        <div class="round-preview">palace … shopping centre</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">16</span>
+      <span class="topic-zh">旅行</span>
+      <span class="topic-en">Travel</span>
+    </div>
+    <a class="card" href="Round-27.html">
+      <div class="round-num">R27</div>
+      <div class="round-info">
+        <div class="round-title">38 字 · 第 1/2</div>
+        <div class="round-preview">backpack … map</div>
+      </div>
+    </a>
+    <a class="card" href="Round-28.html">
+      <div class="round-num">R28</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 2/2</div>
+        <div class="round-preview">torch … taxi rank</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">17</span>
+      <span class="topic-zh">文學</span>
+      <span class="topic-en">Literature</span>
+    </div>
+    <a class="card" href="Round-29.html">
+      <div class="round-num">R29</div>
+      <div class="round-info">
+        <div class="round-title">16 字</div>
+        <div class="round-preview">non-fiction … science fiction</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">18</span>
+      <span class="topic-zh">藝術</span>
+      <span class="topic-en">The Arts</span>
+    </div>
+    <a class="card" href="Round-30.html">
+      <div class="round-num">R30</div>
+      <div class="round-info">
+        <div class="round-title">12 字</div>
+        <div class="round-preview">paint … orchestra</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">19</span>
+      <span class="topic-zh">天氣</span>
+      <span class="topic-en">Weather</span>
+    </div>
+    <a class="card" href="Round-31.html">
+      <div class="round-num">R31</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 1/2</div>
+        <div class="round-preview">freezing … icy</div>
+      </div>
+    </a>
+    <a class="card" href="Round-32.html">
+      <div class="round-num">R32</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 2/2</div>
+        <div class="round-preview">snow … degree centigrade</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">20</span>
+      <span class="topic-zh">休閒活動</span>
+      <span class="topic-en">Leisure Activities</span>
+    </div>
+    <a class="card" href="Round-33.html">
+      <div class="round-num">R33</div>
+      <div class="round-info">
+        <div class="round-title">21 字</div>
+        <div class="round-preview">climbing … watch a film</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">21</span>
+      <span class="topic-zh">新聞報導</span>
+      <span class="topic-en">News Reports</span>
+    </div>
+    <a class="card" href="Round-34.html">
+      <div class="round-num">R34</div>
+      <div class="round-info">
+        <div class="round-title">13 字</div>
+        <div class="round-preview">report … weekly</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">22</span>
+      <span class="topic-zh">體育運動</span>
+      <span class="topic-en">Spor ts</span>
+    </div>
+    <a class="card" href="Round-35.html">
+      <div class="round-num">R35</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 1/3</div>
+        <div class="round-preview">badminton … match</div>
+      </div>
+    </a>
+    <a class="card" href="Round-36.html">
+      <div class="round-num">R36</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 2/3</div>
+        <div class="round-preview">rider … swimming</div>
+      </div>
+    </a>
+    <a class="card" href="Round-37.html">
+      <div class="round-num">R37</div>
+      <div class="round-info">
+        <div class="round-title">36 字 · 第 3/3</div>
+        <div class="round-preview">team … take part in</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">23</span>
+      <span class="topic-zh">動物</span>
+      <span class="topic-en">Animals</span>
+    </div>
+    <a class="card" href="Round-38.html">
+      <div class="round-num">R38</div>
+      <div class="round-info">
+        <div class="round-title">32 字 · 第 1/2</div>
+        <div class="round-preview">cage … giant</div>
+      </div>
+    </a>
+    <a class="card" href="Round-39.html">
+      <div class="round-num">R39</div>
+      <div class="round-info">
+        <div class="round-title">31 字 · 第 2/2</div>
+        <div class="round-preview">monkey … sea creature</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">24</span>
+      <span class="topic-zh">健康生活</span>
+      <span class="topic-en">Healthy Living</span>
+    </div>
+    <a class="card" href="Round-40.html">
+      <div class="round-num">R40</div>
+      <div class="round-info">
+        <div class="round-title">20 字</div>
+        <div class="round-preview">fit … get off</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">25</span>
+      <span class="topic-zh">科目</span>
+      <span class="topic-en">Subjects</span>
+    </div>
+    <a class="card" href="Round-41.html">
+      <div class="round-num">R41</div>
+      <div class="round-info">
+        <div class="round-title">26 字</div>
+        <div class="round-preview">arithmetic … nature studies</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">26</span>
+      <span class="topic-zh">健康與醫療</span>
+      <span class="topic-en">Health and Medicine</span>
+    </div>
+    <a class="card" href="Round-42.html">
+      <div class="round-num">R42</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 1/3</div>
+        <div class="round-preview">brain … dead</div>
+      </div>
+    </a>
+    <a class="card" href="Round-43.html">
+      <div class="round-num">R43</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 2/3</div>
+        <div class="round-preview">head … leg</div>
+      </div>
+    </a>
+    <a class="card" href="Round-44.html">
+      <div class="round-num">R44</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 3/3</div>
+        <div class="round-preview">toe … sore throat</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">27</span>
+      <span class="topic-zh">親人/親屬</span>
+      <span class="topic-en">Relatives</span>
+    </div>
+    <a class="card" href="Round-45.html">
+      <div class="round-num">R45</div>
+      <div class="round-info">
+        <div class="round-title">33 字</div>
+        <div class="round-preview">grandchild … look forward to</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">28</span>
+      <span class="topic-zh">方位、</span>
+      <span class="topic-en">Directions, Seasons and Months</span>
+    </div>
+    <a class="card" href="Round-46.html">
+      <div class="round-num">R46</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 1/2</div>
+        <div class="round-preview">behind … there</div>
+      </div>
+    </a>
+    <a class="card" href="Round-47.html">
+      <div class="round-num">R47</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 2/2</div>
+        <div class="round-preview">under … in front of</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">29</span>
+      <span class="topic-zh">愛好</span>
+      <span class="topic-en">Hobbies</span>
+    </div>
+    <a class="card" href="Round-48.html">
+      <div class="round-num">R48</div>
+      <div class="round-info">
+        <div class="round-title">25 字</div>
+        <div class="round-preview">build … go camping</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">30</span>
+      <span class="topic-zh">戲劇與音樂</span>
+      <span class="topic-en">Theatre and Music</span>
+    </div>
+    <a class="card" href="Round-49.html">
+      <div class="round-num">R49</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 1/2</div>
+        <div class="round-preview">guitar … piano</div>
+      </div>
+    </a>
+    <a class="card" href="Round-50.html">
+      <div class="round-num">R50</div>
+      <div class="round-info">
+        <div class="round-title">24 字 · 第 2/2</div>
+        <div class="round-preview">stage … pop music</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">31</span>
+      <span class="topic-zh">地理</span>
+      <span class="topic-en">Geography</span>
+    </div>
+    <a class="card" href="Round-51.html">
+      <div class="round-num">R51</div>
+      <div class="round-info">
+        <div class="round-title">29 字</div>
+        <div class="round-preview">coast … waterfall</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">32</span>
+      <span class="topic-zh">電視</span>
+      <span class="topic-en">Television</span>
+    </div>
+    <a class="card" href="Round-52.html">
+      <div class="round-num">R52</div>
+      <div class="round-info">
+        <div class="round-title">14 字</div>
+        <div class="round-preview">channel … weather forecast</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">33</span>
+      <span class="topic-zh">朋友</span>
+      <span class="topic-en">Friends</span>
+    </div>
+    <a class="card" href="Round-53.html">
+      <div class="round-num">R53</div>
+      <div class="round-info">
+        <div class="round-title">35 字</div>
+        <div class="round-preview">careful … make up</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">34</span>
+      <span class="topic-zh">意見與態度</span>
+      <span class="topic-en">Opinion and Attitude</span>
+    </div>
+    <a class="card" href="Round-54.html">
+      <div class="round-num">R54</div>
+      <div class="round-info">
+        <div class="round-title">10 字</div>
+        <div class="round-preview">recommend … warn</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">35</span>
+      <span class="topic-zh">烹飪</span>
+      <span class="topic-en">Cooking</span>
+    </div>
+    <a class="card" href="Round-55.html">
+      <div class="round-num">R55</div>
+      <div class="round-info">
+        <div class="round-title">21 字 · 第 1/2</div>
+        <div class="round-preview">bake … oven</div>
+      </div>
+    </a>
+    <a class="card" href="Round-56.html">
+      <div class="round-num">R56</div>
+      <div class="round-info">
+        <div class="round-title">21 字 · 第 2/2</div>
+        <div class="round-preview">pot … vanilla</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">36</span>
+      <span class="topic-zh">外出就餐</span>
+      <span class="topic-en">Eating Out</span>
+    </div>
+    <a class="card" href="Round-57.html">
+      <div class="round-num">R57</div>
+      <div class="round-info">
+        <div class="round-title">12 字</div>
+        <div class="round-preview">tip … main course</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">37</span>
+      <span class="topic-zh">環境</span>
+      <span class="topic-en">Environment</span>
+    </div>
+    <a class="card" href="Round-58.html">
+      <div class="round-num">R58</div>
+      <div class="round-info">
+        <div class="round-title">28 字</div>
+        <div class="round-preview">glass … public transport</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">38</span>
+      <span class="topic-zh">服裝與飾品</span>
+      <span class="topic-en">Clothes and Accessories</span>
+    </div>
+    <a class="card" href="Round-59.html">
+      <div class="round-num">R59</div>
+      <div class="round-info">
+        <div class="round-title">38 字 · 第 1/2</div>
+        <div class="round-preview">coat … perfume</div>
+      </div>
+    </a>
+    <a class="card" href="Round-60.html">
+      <div class="round-num">R60</div>
+      <div class="round-info">
+        <div class="round-title">37 字 · 第 2/2</div>
+        <div class="round-preview">tracksuit … wear out</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">39</span>
+      <span class="topic-zh">鄉村</span>
+      <span class="topic-en">The Countryside</span>
+    </div>
+    <a class="card" href="Round-61.html">
+      <div class="round-num">R61</div>
+      <div class="round-info">
+        <div class="round-title">23 字 · 第 1/2</div>
+        <div class="round-preview">branch … lake</div>
+      </div>
+    </a>
+    <a class="card" href="Round-62.html">
+      <div class="round-num">R62</div>
+      <div class="round-info">
+        <div class="round-title">23 字 · 第 2/2</div>
+        <div class="round-preview">rock … yard</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">40</span>
+      <span class="topic-zh">交通工具</span>
+      <span class="topic-en">Vehicles</span>
+    </div>
+    <a class="card" href="Round-63.html">
+      <div class="round-num">R63</div>
+      <div class="round-info">
+        <div class="round-title">36 字</div>
+        <div class="round-preview">train … underground train</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">41</span>
+      <span class="topic-zh">公共運輸</span>
+      <span class="topic-en">Public Transport</span>
+    </div>
+    <a class="card" href="Round-64.html">
+      <div class="round-num">R64</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 1/3</div>
+        <div class="round-preview">delay … fare</div>
+      </div>
+    </a>
+    <a class="card" href="Round-65.html">
+      <div class="round-num">R65</div>
+      <div class="round-info">
+        <div class="round-title">28 字 · 第 2/3</div>
+        <div class="round-preview">park … terminal</div>
+      </div>
+    </a>
+    <a class="card" href="Round-66.html">
+      <div class="round-num">R66</div>
+      <div class="round-info">
+        <div class="round-title">27 字 · 第 3/3</div>
+        <div class="round-preview">by air … waiting room</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">42</span>
+      <span class="topic-zh">語言學習</span>
+      <span class="topic-en">Language Learning</span>
+    </div>
+    <a class="card" href="Round-67.html">
+      <div class="round-num">R67</div>
+      <div class="round-info">
+        <div class="round-title">24 字</div>
+        <div class="round-preview">comma … writing</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">43</span>
+      <span class="topic-zh">容器/器皿</span>
+      <span class="topic-en">Containers</span>
+    </div>
+    <a class="card" href="Round-68.html">
+      <div class="round-num">R68</div>
+      <div class="round-info">
+        <div class="round-title">16 字</div>
+        <div class="round-preview">bottle … tube</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">44</span>
+      <span class="topic-zh">職業</span>
+      <span class="topic-en">Jobs</span>
+    </div>
+    <a class="card" href="Round-69.html">
+      <div class="round-num">R69</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 1/2</div>
+        <div class="round-preview">babysitter … lawyer</div>
+      </div>
+    </a>
+    <a class="card" href="Round-70.html">
+      <div class="round-num">R70</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 2/2</div>
+        <div class="round-preview">poet … trade agent</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">45</span>
+      <span class="topic-zh">電腦</span>
+      <span class="topic-en">Computers</span>
+    </div>
+    <a class="card" href="Round-71.html">
+      <div class="round-num">R71</div>
+      <div class="round-info">
+        <div class="round-title">25 字 · 第 1/2</div>
+        <div class="round-preview">blog … laptop</div>
+      </div>
+    </a>
+    <a class="card" href="Round-72.html">
+      <div class="round-num">R72</div>
+      <div class="round-info">
+        <div class="round-title">25 字 · 第 2/2</div>
+        <div class="round-preview">web … web page</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">46</span>
+      <span class="topic-zh">時間</span>
+      <span class="topic-en">Time</span>
+    </div>
+    <a class="card" href="Round-73.html">
+      <div class="round-num">R73</div>
+      <div class="round-info">
+        <div class="round-title">40 字</div>
+        <div class="round-preview">day … working hours</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">47</span>
+      <span class="topic-zh">顏色</span>
+      <span class="topic-en">Colours</span>
+    </div>
+    <a class="card" href="Round-74.html">
+      <div class="round-num">R74</div>
+      <div class="round-info">
+        <div class="round-title">17 字</div>
+        <div class="round-preview">black … navy blue</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">48</span>
+      <span class="topic-zh">一周七天</span>
+      <span class="topic-en">Days of the Week</span>
+    </div>
+    <a class="card" href="Round-75.html">
+      <div class="round-num">R75</div>
+      <div class="round-info">
+        <div class="round-title">7 字</div>
+        <div class="round-preview">Monday … Sunday</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">49</span>
+      <span class="topic-zh">基數詞</span>
+      <span class="topic-en">Cardinal Numbers</span>
+    </div>
+    <a class="card" href="Round-76.html">
+      <div class="round-num">R76</div>
+      <div class="round-info">
+        <div class="round-title">29 字</div>
+        <div class="round-preview">three … hundred</div>
+      </div>
+    </a>
+  </div>
+  <div class="topic-section">
+    <div class="topic-header">
+      <span class="topic-num">50</span>
+      <span class="topic-zh">序數詞</span>
+      <span class="topic-en">Ordinal Numbers</span>
+    </div>
+    <a class="card" href="Round-77.html">
+      <div class="round-num">R77</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 1/4</div>
+        <div class="round-preview">ceiv … cit</div>
+      </div>
+    </a>
+    <a class="card" href="Round-78.html">
+      <div class="round-num">R78</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 2/4</div>
+        <div class="round-preview">fect … lic</div>
+      </div>
+    </a>
+    <a class="card" href="Round-79.html">
+      <div class="round-num">R79</div>
+      <div class="round-info">
+        <div class="round-title">34 字 · 第 3/4</div>
+        <div class="round-preview">loc … pris</div>
+      </div>
+    </a>
+    <a class="card" href="Round-80.html">
+      <div class="round-num">R80</div>
+      <div class="round-info">
+        <div class="round-title">32 字 · 第 4/4</div>
+        <div class="round-preview">techn … voy</div>
+      </div>
+    </a>
+  </div>
+  </div>
+
+  <div class="misc-section">
+    <div class="misc-header">
+      <span class="topic-num">51</span>
+      <span class="topic-zh">其他核心詞</span>
+      <span class="topic-en">Other Core Words</span>
+      <span class="misc-count">1082 字 · 28 回合</span>
+    </div>
+    <div class="misc-cards">
+    <a class="card" href="Round-81.html">
+      <div class="round-num">R81</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 1/28</div>
+        <div class="round-preview">accent … amount</div>
+      </div>
+    </a>
+    <a class="card" href="Round-82.html">
+      <div class="round-num">R82</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 2/28</div>
+        <div class="round-preview">annoy … attempt</div>
+      </div>
+    </a>
+    <a class="card" href="Round-83.html">
+      <div class="round-num">R83</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 3/28</div>
+        <div class="round-preview">beat … best-seller</div>
+      </div>
+    </a>
+    <a class="card" href="Round-84.html">
+      <div class="round-num">R84</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 4/28</div>
+        <div class="round-preview">cable … casual</div>
+      </div>
+    </a>
+    <a class="card" href="Round-85.html">
+      <div class="round-num">R85</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 5/28</div>
+        <div class="round-preview">collection … complicated</div>
+      </div>
+    </a>
+    <a class="card" href="Round-86.html">
+      <div class="round-num">R86</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 6/28</div>
+        <div class="round-preview">contain … cover</div>
+      </div>
+    </a>
+    <a class="card" href="Round-87.html">
+      <div class="round-num">R87</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 7/28</div>
+        <div class="round-preview">deal … develop</div>
+      </div>
+    </a>
+    <a class="card" href="Round-88.html">
+      <div class="round-num">R88</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 8/28</div>
+        <div class="round-preview">enclosed … enquiry</div>
+      </div>
+    </a>
+    <a class="card" href="Round-89.html">
+      <div class="round-num">R89</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 9/28</div>
+        <div class="round-preview">exactly … family</div>
+      </div>
+    </a>
+    <a class="card" href="Round-90.html">
+      <div class="round-num">R90</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 10/28</div>
+        <div class="round-preview">fight … forget</div>
+      </div>
+    </a>
+    <a class="card" href="Round-91.html">
+      <div class="round-num">R91</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 11/28</div>
+        <div class="round-preview">grab … happen</div>
+      </div>
+    </a>
+    <a class="card" href="Round-92.html">
+      <div class="round-num">R92</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 12/28</div>
+        <div class="round-preview">hope … imagine</div>
+      </div>
+    </a>
+    <a class="card" href="Round-93.html">
+      <div class="round-num">R93</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 13/28</div>
+        <div class="round-preview">inch … invent</div>
+      </div>
+    </a>
+    <a class="card" href="Round-94.html">
+      <div class="round-num">R94</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 14/28</div>
+        <div class="round-preview">later … knowledge</div>
+      </div>
+    </a>
+    <a class="card" href="Round-95.html">
+      <div class="round-num">R95</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 15/28</div>
+        <div class="round-preview">limit … mad</div>
+      </div>
+    </a>
+    <a class="card" href="Round-96.html">
+      <div class="round-num">R96</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 16/28</div>
+        <div class="round-preview">magic … most</div>
+      </div>
+    </a>
+    <a class="card" href="Round-97.html">
+      <div class="round-num">R97</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 17/28</div>
+        <div class="round-preview">near … opportunity</div>
+      </div>
+    </a>
+    <a class="card" href="Round-98.html">
+      <div class="round-num">R98</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 18/28</div>
+        <div class="round-preview">peace … pick</div>
+      </div>
+    </a>
+    <a class="card" href="Round-99.html">
+      <div class="round-num">R99</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 19/28</div>
+        <div class="round-preview">police … private</div>
+      </div>
+    </a>
+    <a class="card" href="Round-100.html">
+      <div class="round-num">R100</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 20/28</div>
+        <div class="round-preview">pub … realise</div>
+      </div>
+    </a>
+    <a class="card" href="Round-101.html">
+      <div class="round-num">R101</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 21/28</div>
+        <div class="round-preview">realistic … reward</div>
+      </div>
+    </a>
+    <a class="card" href="Round-102.html">
+      <div class="round-num">R102</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 22/28</div>
+        <div class="round-preview">search … shine</div>
+      </div>
+    </a>
+    <a class="card" href="Round-103.html">
+      <div class="round-num">R103</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 23/28</div>
+        <div class="round-preview">sick … soon</div>
+      </div>
+    </a>
+    <a class="card" href="Round-104.html">
+      <div class="round-num">R104</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 24/28</div>
+        <div class="round-preview">stain … style</div>
+      </div>
+    </a>
+    <a class="card" href="Round-105.html">
+      <div class="round-num">R105</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 25/28</div>
+        <div class="round-preview">subject … surround</div>
+      </div>
+    </a>
+    <a class="card" href="Round-106.html">
+      <div class="round-num">R106</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 26/28</div>
+        <div class="round-preview">tongue … unfortunately</div>
+      </div>
+    </a>
+    <a class="card" href="Round-107.html">
+      <div class="round-num">R107</div>
+      <div class="round-info">
+        <div class="round-title">39 字 · 第 27/28</div>
+        <div class="round-preview">unlike … welfare</div>
+      </div>
+    </a>
+    <a class="card" href="Round-108.html">
+      <div class="round-num">R108</div>
+      <div class="round-info">
+        <div class="round-title">29 字 · 第 28/28</div>
+        <div class="round-preview">wide … you</div>
+      </div>
+    </a>
+    </div>
+  </div>
+</main>
+</body>
+</html>
