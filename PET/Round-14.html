@@ -328,10 +328,10 @@ const words = [
   },
   {
     "word": "accept",
-    "kk": "[əkˋsept]",
+    "kk": "[əkˈsept]",
     "pos": "v.",
     "meaning": "接受；承認",
-    "exOrig": "Please accept this small gift.",
+    "exOrig": "Please accept this small gift",
     "exOrigZh": "請收下這份小小的禮物。",
     "exOrig2": "It took him a long time to accept that he had made a mistake.",
     "exOrig2Zh": "他花了很長時間才承認自己犯了一個錯誤。",
@@ -344,7 +344,7 @@ const words = [
   },
   {
     "word": "candidate",
-    "kk": "[ˋkændɪdət]",
+    "kk": "[ˈkændɪdət]",
     "pos": "n.",
     "meaning": "應試者；候選人",
     "exOrig": "Each candidate answered three questions.",
@@ -438,6 +438,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -447,16 +461,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));

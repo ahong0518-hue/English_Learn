@@ -408,9 +408,9 @@ const words = [
   },
   {
     "word": "plain",
-    "kk": "[]",
-    "pos": "phrase.",
-    "meaning": "釋義表示「抱怨」",
+    "kk": "[pleɪn]",
+    "pos": "adj.",
+    "meaning": "清楚的；簡單的，樸素的；平常的記聯想記憶：生活中，疼痛（pain）在所難免，再平常（plain）不過",
     "exOrig": "She complained that the soup was too cold.",
     "exOrigZh": "她抱怨湯太冷了。",
     "exOrig2": null,
@@ -792,14 +792,14 @@ const words = [
   },
   {
     "word": "pet",
-    "kk": "[]",
-    "pos": "phrase.",
-    "meaning": "釋義表示「力爭」",
+    "kk": "[pet]",
+    "pos": "n.",
+    "meaning": "寵物",
     "exOrig": "The two teams competed hard for the trophy.",
     "exOrigZh": "兩支隊伍為了獎盃奮力競爭。",
     "exOrig2": null,
     "exOrig2Zh": null,
-    "collocation": null,
+    "collocation": "a pet shop 一個寵物店",
     "antonym": null,
     "tags": [
       "R79"
@@ -824,9 +824,9 @@ const words = [
   },
   {
     "word": "port",
-    "kk": "[]",
-    "pos": "phrase.",
-    "meaning": "釋義表示「運送」",
+    "kk": "[pɔːt]",
+    "pos": "n.",
+    "meaning": "港口",
     "exOrig": "The truck transported goods across the country.",
     "exOrigZh": "卡車將貨物運送到全國各地。",
     "exOrig2": null,
@@ -918,6 +918,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -927,16 +941,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));

@@ -312,7 +312,7 @@
 const words = [
   {
     "word": "coffee",
-    "kk": "[ˋkɒfi]",
+    "kk": "[ˈkɒfi]",
     "pos": "n.",
     "meaning": "咖啡",
     "exOrig": "She drinks coffee every morning.",
@@ -329,8 +329,8 @@ const words = [
   {
     "word": "milk",
     "kk": "[mɪlk]",
-    "pos": "",
-    "meaning": "",
+    "pos": "n.",
+    "meaning": "牛奶",
     "exOrig": "The child drinks a glass of milk daily.",
     "exOrigZh": "這個孩子每天喝一杯牛奶。",
     "exOrig2": null,
@@ -360,7 +360,7 @@ const words = [
   },
   {
     "word": "juice",
-    "kk": "[dʒus]",
+    "kk": "[dʒuːs]",
     "pos": "n.",
     "meaning": "汁；液；水果（蔬菜）汁飲料",
     "exOrig": "She poured a glass of orange juice.",
@@ -376,9 +376,9 @@ const words = [
   },
   {
     "word": "cola",
-    "kk": "[ˋkəʊlə]",
-    "pos": "",
-    "meaning": "",
+    "kk": "[ˈkəʊlə]",
+    "pos": "n.",
+    "meaning": "可樂",
     "exOrig": "They shared a cold cola at the park.",
     "exOrigZh": "他們在公園裡分享了一杯冰涼的可樂。",
     "exOrig2": null,
@@ -392,7 +392,7 @@ const words = [
   },
   {
     "word": "lemonade",
-    "kk": "[͵leməˋneɪd]",
+    "kk": "[ˌleməˈneɪd]",
     "pos": "n.",
     "meaning": "檸檬汽水",
     "exOrig": "She bought a cold lemonade at the fair.",
@@ -424,7 +424,7 @@ const words = [
   },
   {
     "word": "sugar",
-    "kk": "[ˋʃʊɡə(r)]",
+    "kk": "[ˈʃʊɡə(r)]",
     "pos": "n.",
     "meaning": "糖",
     "exOrig": "She added a spoon of sugar to her tea.",
@@ -440,7 +440,7 @@ const words = [
   },
   {
     "word": "tea",
-    "kk": "[ti]",
+    "kk": "[tiː]",
     "pos": "n.",
     "meaning": "茶",
     "exOrig": "My grandmother drinks green tea every evening.",
@@ -456,9 +456,9 @@ const words = [
   },
   {
     "word": "thirsty",
-    "kk": "[ˋθɝsti]",
+    "kk": "[ˈθɜːsti]",
     "pos": "adj.",
-    "meaning": "口渴的；渴望的，渴求的",
+    "meaning": "口渴的；渴望的，渴求的記來自thirst（n 口渴）比 thirstier最 thirstiest",
     "exOrig": "After running, I felt very thirsty.",
     "exOrigZh": "跑步之後，我感到非常口渴。",
     "exOrig2": "He was thirsty for knowledge and read every book he could find.",
@@ -582,6 +582,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -591,16 +605,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));

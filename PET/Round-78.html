@@ -328,9 +328,9 @@ const words = [
   },
   {
     "word": "gram",
-    "kk": "[]",
-    "pos": "phrase.",
-    "meaning": "釋義表示「寫，圖」",
+    "kk": "[ɡræm]",
+    "pos": "n.",
+    "meaning": "克",
     "exOrig": "A diagram helps explain the idea clearly.",
     "exOrigZh": "圖表有助於清楚地說明這個概念。",
     "exOrig2": null,
@@ -472,14 +472,14 @@ const words = [
   },
   {
     "word": "form",
-    "kk": "[]",
-    "pos": "phrase.",
-    "meaning": "釋義表示「形式；形狀」",
+    "kk": "[fɔːm]",
+    "pos": "n.",
+    "meaning": "表格；型別；形式 v 形成；構成",
     "exOrig": "Students must wear the school uniform every day.",
     "exOrigZh": "學生每天都必須穿校服。",
     "exOrig2": "She had to fill out a form to join the school sports club.",
     "exOrig2Zh": "她必須填寫一張表格才能加入學校的運動社團。",
-    "collocation": null,
+    "collocation": "in the form of… 以……的形式",
     "antonym": null,
     "tags": [
       "R78"
@@ -918,6 +918,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -927,16 +941,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));

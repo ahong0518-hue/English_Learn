@@ -275,7 +275,7 @@
 <body>
 <header>
   <a class="home-link" href="index.html">← 首頁</a>
-  <h1>R66 · 公共運輸 (3/3) · 27 字</h1>
+  <h1>R66 · 公共運輸 (3/3) · 28 字</h1>
   <div class="mode-bar">
     <button class="mode-btn active" data-mode="study">📖 學習</button>
     <button class="mode-btn" data-mode="en2zh">🇬🇧→🇹🇼 英測中</button>
@@ -328,10 +328,10 @@ const words = [
   },
   {
     "word": "traffic",
-    "kk": "[ˋtræfɪk]",
+    "kk": "[ˈtræfɪk]",
     "pos": "n.",
     "meaning": "路上行駛的車輛；交通",
-    "exOrig": "There is very little traffic on the roads.",
+    "exOrig": "There is very little traffic on the roads",
     "exOrigZh": "路上的車輛很少。",
     "exOrig2": "The website got a lot of traffic after the news article was published.",
     "exOrig2Zh": "新聞文章發布後，那個網站的流量大幅增加。",
@@ -392,7 +392,7 @@ const words = [
   },
   {
     "word": "uncomfortable",
-    "kk": "[ʌnˋkʌmftəbl]",
+    "kk": "[ʌnˈkʌmftəbl]",
     "pos": "adj.",
     "meaning": "不舒服的",
     "exOrig": "The hard seat was very uncomfortable.",
@@ -472,7 +472,7 @@ const words = [
   },
   {
     "word": "through",
-    "kk": "[θru]",
+    "kk": "[θruː]",
     "pos": "prep.",
     "meaning": "穿過",
     "exOrig": "The train went through the mountain.",
@@ -488,14 +488,14 @@ const words = [
   },
   {
     "word": "timetable",
-    "kk": "[ˋtaɪmteɪbl]",
+    "kk": "[ˈtaɪmteɪbl]",
     "pos": "n.",
-    "meaning": "時間表",
+    "meaning": "時間表記合成詞：time（時間）+table（表格）→時間表",
     "exOrig": "Check the timetable for the next train.",
     "exOrigZh": "查看時間表了解下一班火車。",
     "exOrig2": null,
     "exOrig2Zh": null,
-    "collocation": "a railway/train/bus timetable 一個火車/火車/公共汽車時刻表",
+    "collocation": "a railway/train/bus timetable 一個火車/火車/公共汽車時刻表近 schedule（n 時間表）",
     "antonym": null,
     "tags": [
       "R66"
@@ -504,7 +504,7 @@ const words = [
   },
   {
     "word": "unreliable",
-    "kk": "[͵ʌnrɪˋlaɪəbl]",
+    "kk": "[ˌʌnrɪˈlaɪəbl]",
     "pos": "adj.",
     "meaning": "不可靠的",
     "exOrig": "The old bus is unreliable in bad weather.",
@@ -520,9 +520,9 @@ const words = [
   },
   {
     "word": "via",
-    "kk": "[ˋvaɪə]",
-    "pos": "",
-    "meaning": "",
+    "kk": "[ˈvaɪə]",
+    "pos": "prep.",
+    "meaning": "經過",
     "exOrig": "We flew to Rome via Paris.",
     "exOrigZh": "我們經由巴黎飛往羅馬。",
     "exOrig2": null,
@@ -741,6 +741,22 @@ const words = [
       "R66"
     ],
     "type": "normal"
+  },
+  {
+    "word": "lost property",
+    "kk": "[ˌlɒst ˈprɒpəti]",
+    "pos": "n.",
+    "meaning": "招領的失物；失物招領處",
+    "exOrig": "I found a wallet and handed it in to lost property.",
+    "exOrigZh": "我找到一個錢包並交到了失物招領處。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R66"
+    ],
+    "type": "normal"
   }
 ];
 
@@ -806,6 +822,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -815,16 +845,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));

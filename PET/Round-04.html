@@ -275,7 +275,7 @@
 <body>
 <header>
   <a class="home-link" href="index.html">← 首頁</a>
-  <h1>R04 · 大洲與地區 · 7 字</h1>
+  <h1>R04 · 大洲與地區 · 10 字</h1>
   <div class="mode-bar">
     <button class="mode-btn active" data-mode="study">📖 學習</button>
     <button class="mode-btn" data-mode="en2zh">🇬🇧→🇹🇼 英測中</button>
@@ -344,7 +344,7 @@ const words = [
   },
   {
     "word": "Asia",
-    "kk": "[ˋeɪʒə]",
+    "kk": "[ˈeɪʒə]",
     "pos": "n.",
     "meaning": "亞洲",
     "exOrig": "Taiwan is a small island in Asia.",
@@ -360,9 +360,9 @@ const words = [
   },
   {
     "word": "Australia",
-    "kk": "[ɒˋstreɪlɪə]",
+    "kk": "[ɒˈstreɪlɪə]",
     "pos": "n.",
-    "meaning": "澳洲",
+    "meaning": "澳大利亞；澳洲",
     "exOrig": "Kangaroos live in Australia.",
     "exOrigZh": "袋鼠住在澳洲。",
     "exOrig2": null,
@@ -376,9 +376,9 @@ const words = [
   },
   {
     "word": "Europe",
-    "kk": "[ˋjʊərəp]",
-    "pos": "",
-    "meaning": "",
+    "kk": "[ˈjʊərəp]",
+    "pos": "n.",
+    "meaning": "歐洲",
     "exOrig": "France and Germany are both in Europe.",
     "exOrigZh": "法國和德國都在歐洲。",
     "exOrig2": null,
@@ -417,6 +417,54 @@ const words = [
     "exOrig2Zh": null,
     "collocation": null,
     "antonym": null,
+    "tags": [
+      "R04"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "North America",
+    "kk": "[nɔrθ əˋmɛrɪkə]",
+    "pos": "n.",
+    "meaning": "北美洲",
+    "exOrig": "Canada and the USA are in North America.",
+    "exOrigZh": "加拿大和美國都在北美洲。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R04"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "South America",
+    "kk": "[saʊθ əˋmɛrɪkə]",
+    "pos": "n.",
+    "meaning": "南美洲",
+    "exOrig": "Brazil is the largest country in South America.",
+    "exOrigZh": "巴西是南美洲最大的國家。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": null,
+    "tags": [
+      "R04"
+    ],
+    "type": "normal"
+  },
+  {
+    "word": "the Arctic",
+    "kk": "[ðə ˋɑrktɪk]",
+    "pos": "n.",
+    "meaning": "北極",
+    "exOrig": "Polar bears live in the Arctic.",
+    "exOrigZh": "北極熊住在北極。",
+    "exOrig2": null,
+    "exOrig2Zh": null,
+    "collocation": null,
+    "antonym": "Antarctica 南極洲",
     "tags": [
       "R04"
     ],
@@ -486,6 +534,20 @@ function ttsUrl(w) {
   return `https://translate.google.com/translate_tts?ie=UTF-8&tl=en&client=tw-ob&q=${encodeURIComponent(w)}`;
 }
 
+let _voice = null;
+function _getVoice() {
+  if (_voice) return _voice;
+  const vs = window.speechSynthesis.getVoices();
+  _voice = vs.find(v => /^en-US$/i.test(v.lang) && /Siri/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang) && /(Samantha|Nicky|Ava|Alex)/i.test(v.name))
+        || vs.find(v => /^en-US$/i.test(v.lang))
+        || vs.find(v => /^en/i.test(v.lang));
+  return _voice;
+}
+if (typeof speechSynthesis !== 'undefined') {
+  speechSynthesis.onvoiceschanged = () => { _voice = null; };
+}
+
 let currentAudio = null;
 let lastAudioTime = 0;
 function playAudio(word) {
@@ -495,16 +557,12 @@ function playAudio(word) {
   if (currentAudio) {
     try { currentAudio.pause(); currentAudio.currentTime = 0; } catch(e) {}
   }
-  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
   if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(word);
     u.lang = 'en-US'; u.rate = 0.85;
-    const voices = window.speechSynthesis.getVoices();
-    const preferred = voices.find(v =>
-      /en(-US|-GB)?$/i.test(v.lang) &&
-      /(Google|Microsoft|Samantha|Karen|Daniel|Moira|Tessa|Ava|Alex)/i.test(v.name)
-    ) || voices.find(v => /en(-US|-GB)?$/i.test(v.lang));
-    if (preferred) u.voice = preferred;
+    const v = _getVoice();
+    if (v) u.voice = v;
     window.speechSynthesis.speak(u);
   } else {
     currentAudio = new Audio(ttsUrl(word));
