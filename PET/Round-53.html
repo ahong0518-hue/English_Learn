@@ -881,7 +881,25 @@ const HINTS = {
 
 let currentMode = 'study';
 let answered = {};
-let flags = JSON.parse(localStorage.getItem('pet-r53-flags') || '{}');
+function petSave(key, value) {
+  const json = JSON.stringify(value);
+  try {
+    localStorage.setItem(key, json);
+    if (localStorage.getItem(key) !== json) throw new Error('verify failed');
+    return;
+  } catch (e) {}
+  try { localStorage.setItem(key, json); } catch (e) {}
+}
+function petLoad(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    return v !== null ? JSON.parse(v) : fallback;
+  } catch (e) { return fallback; }
+}
+function petRemove(key) {
+  try { localStorage.removeItem(key); } catch (e) {}
+}
+let flags = petLoad('pet-r53-flags', {});
 let modeOrder = { study: null, en2zh: null, zh2en: null, listen: null };
 let modeIdx = { study: 0, en2zh: 0, zh2en: 0, listen: 0 };
 
@@ -910,7 +928,7 @@ function reshuffle(mode) {
 
 function getOrder() { return ensureOrder(currentMode); }
 
-function saveFlags() { localStorage.setItem('pet-r53-flags', JSON.stringify(flags)); }
+function saveFlags() { petSave('pet-r53-flags', flags); }
 function setFlag(i, on) {
   if (on) flags[i] = true; else delete flags[i];
   saveFlags();
@@ -1307,18 +1325,17 @@ function updateProgress() {
 }
 
 function saveProgress() {
-  localStorage.setItem('pet-r53-' + currentMode, JSON.stringify(answered));
+  petSave('pet-r53-' + currentMode, answered);
 }
 
 function loadProgress() {
-  const saved = localStorage.getItem('pet-r53-' + currentMode);
-  answered = saved ? JSON.parse(saved) : {};
+  answered = petLoad('pet-r53-' + currentMode, {});
 }
 
 function resetProgress() {
   if (!confirm('重置本模式的進度?')) return;
   answered = {};
-  localStorage.removeItem('pet-r53-' + currentMode);
+  petRemove('pet-r53-' + currentMode);
   renderCards();
 }
 
